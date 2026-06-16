@@ -1,0 +1,268 @@
+
+
+<section
+  class="py-1"
+  *ngIf="!loading; else notload"
+  [dir]="isArabic() ? 'rtl' : 'ltr'"
+>
+  <div class="container">
+
+    <!-- Header -->
+    <div class="form-header text-center mb-4">
+      <h2 class="form-title">🎟️ {{ 'dashboard.Coupons' | translate }}</h2>
+    </div>
+
+
+    <div class="row g-4 mb-4">
+      <div class="col-md-6">
+        <div class="card shadow-sm border-0 h-100">
+          <div class="card-body text-center">
+            <div class="stat-icon mb-2 bg-primary text-white rounded-circle d-inline-flex justify-content-center align-items-center" style="width: 50px; height: 50px;">
+              <i class="fa-solid fa-ticket"></i>
+            </div>
+            <h6 class="text-muted">{{ 'dashboard.TOTAL COUPONS' | translate }}</h6>
+            <h3 class="fw-bold">{{ allCouponsNum }}</h3>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="card shadow-sm border-0 h-100">
+          <div class="card-body text-center">
+            <div class="stat-icon mb-2 bg-success text-white rounded-circle d-inline-flex justify-content-center align-items-center" style="width: 50px; height: 50px;">
+              <i class="fa-solid fa-check-circle"></i>
+            </div>
+            <h6 class="text-muted">{{ 'dashboard.ACTIVE COUPONS' | translate }}</h6>
+            <h3 class="fw-bold">{{ activateCoupons }}</h3>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Coupons Table -->
+    <div class="card shadow-sm border-0">
+      <div class="card-body p-0">
+        <div class="d-flex justify-content-end mb-3">
+      <button class="btn btn-outline-danger" (click)="editCoupon(layer)">
+        {{ 'dashboard.Create New Coupon' | translate }}
+      </button>
+    </div>
+
+        <table class="table table-hover align-middle mb-0" *ngIf="allCoupons.length > 0">
+          <thead class="table-light">
+            <tr>
+              <th>{{ 'dashboard.Code' | translate }}</th>
+              <th>{{ 'dashboard.discount_type' | translate }}</th>
+              <th>{{ 'dashboard.discount_value' | translate }}</th>
+              <th>{{ 'dashboard.valid_from' | translate }}</th>
+              <th>{{ 'dashboard.valid_to' | translate }}</th>
+              <th>{{ 'dashboard.usage_limit' | translate }}</th>
+              <th>{{ 'dashboard.used_count' | translate }}</th>
+              <th>{{ 'dashboard.active' | translate }}</th>
+              <th>{{ 'dashboard.created_at' | translate }}</th>
+              <th>{{ 'dashboard.Action' | translate }}</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let coupon of allCoupons">
+              <td>{{ coupon.code }}</td>
+              <td>{{ coupon.discount_type }}</td>
+              <td>
+                {{ coupon.discount_type === 'amount' ? coupon.discount_value + ' EGP' : coupon.discount_value + '%' }}
+              </td>
+              <td>{{ coupon.valid_from | date:'MMM d, y' }}</td>
+              <td>{{ coupon.valid_to | date:'MMM d, y' }}</td>
+              <td>{{ coupon.usage_limit }}</td>
+              <td>{{ coupon.used_count }}</td>
+              <td>
+                <span *ngIf="coupon.active" class="badge bg-success">{{ 'dashboard.Active' | translate }}</span>
+                <span *ngIf="!coupon.active" class="badge bg-secondary">{{ 'dashboard.Not Active' | translate }}</span>
+              </td>
+              <td>{{ coupon.created_at | date:'MMM d, y, h:mm a' }}</td>
+              <td class="d-flex gap-2">
+                <button class="btn btn-success btn-sm" (click)="couponDetails(coupon.id, layer, formButtons)">
+                  <i class="fa-solid fa-pen-to-square"></i>
+                </button>
+                <button class="btn btn-danger btn-sm" (click)="deleteCoupon(coupon.id)">
+                  <i class="fa-solid fa-trash"></i>
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="text-center p-4" *ngIf="allCoupons.length === 0">
+          <p class="h5 text-muted">{{ 'dashboard.No coupons exist' | translate }}</p>
+          <img src="./assets/notification.png" alt="No Coupons" height="50">
+        </div>
+      </div>
+    </div>
+
+    <div
+      #layer
+      class="layer position-fixed top-0 bottom-0 start-0 end-0 d-flex justify-content-center align-items-center d-none"
+    >
+      <div class="couponData bg-white w-50 p-4">
+        <div class="d-flex justify-content-between align-items-center">
+          <h2 class="h5">{{ "dashboard.Create New Coupon" | translate }}</h2>
+          <i
+            class="fa fa-solid fa-close fa-x"
+            role="button"
+            (click)="closeLayer(layer)"
+          ></i>
+        </div>
+
+        <hr class="my-3" />
+
+        <form [formGroup]="couponDataForm">
+          <div class="mb-3">
+            <label for="code">{{ "dashboard.Code" | translate }}</label>
+            <input
+              [ngClass]="{
+                'is-invalid':
+                  couponDataForm.get('code')?.errors &&
+                  couponDataForm.get('code')?.touched
+              }"
+              [placeholder]="'dashboard.Enter Coupon Code' | translate"
+              class="form-control w-100 my-1"
+              type="text"
+              id="code"
+              formControlName="code"
+            />
+            <p class="small text-secondary ms-1">
+              {{ "dashboard.E.G" | translate }} : CODE2024
+            </p>
+          </div>
+
+          <div class="mb-3">
+            <label for="discountType">{{
+              "dashboard.discount_type" | translate
+            }}</label>
+            <select
+              class="form-select my-1"
+              id="discountType"
+              formControlName="discount_type"
+            >
+              <option value="percent">
+                {{ "dashboard.percent" | translate }}
+              </option>
+              <option value="amount">
+                {{ "dashboard.amount" | translate }}
+              </option>
+            </select>
+          </div>
+
+          <div class="mb-3">
+            <label for="discountValue">{{
+              "dashboard.discount_value" | translate
+            }}</label>
+            <input
+              [ngClass]="{
+                'is-invalid':
+                  couponDataForm.get('discount_value')?.errors &&
+                  couponDataForm.get('discount_value')?.touched
+              }"
+              [placeholder]="'dashboard.enter_discount_value' | translate"
+              class="form-control w-100 my-1"
+              type="number"
+              id="discountValue"
+              formControlName="discount_value"
+              min="0"
+            />
+            <p
+              class="small text-secondary ms-1"
+              *ngIf="couponDataForm.get('discount_type')?.value === 'percent'"
+            >
+              {{ "dashboard.Discount is in Percentage" | translate }}
+            </p>
+            <p
+              class="small text-secondary ms-1"
+              *ngIf="couponDataForm.get('discount_type')?.value === 'amount'"
+            >
+              {{ "dashboard.amount" | translate }}
+            </p>
+          </div>
+
+          <div class="mb-3">
+            <label for="usageLimit">{{
+              "dashboard.usage_limit" | translate
+            }}</label>
+            <input
+              class="form-control my-1"
+              type="number"
+              id="usageLimit"
+              formControlName="usage_limit"
+              min="0"
+              [placeholder]="'dashboard.Optional' | translate"
+            />
+          </div>
+
+          <div class="mb-3 row">
+            <div class="col">
+              <label for="validFrom">{{
+                "dashboard.valid_from" | translate
+              }}</label>
+              <input
+                type="date"
+                class="form-control"
+                id="validFrom"
+                formControlName="valid_from"
+              />
+            </div>
+            <div class="col">
+              <label for="validTo">{{
+                "dashboard.valid_to" | translate
+              }}</label>
+              <input
+                type="date"
+                class="form-control"
+                id="validTo"
+                formControlName="valid_to"
+              />
+            </div>
+          </div>
+
+          <div class="d-flex align-items-center justify-content-start gap-2">
+            <input
+              class="active m-0"
+              type="checkbox"
+              id="active"
+              formControlName="active"
+            />
+            <label class="inline" for="active">{{
+              "dashboard.Active Coupon" | translate
+            }}</label>
+          </div>
+
+          <div #formButtons>
+            <button
+              *ngIf="couponId == 0"
+              class="btn btn-primary my-3 me-2"
+              (click)="createCoupon(layer, alert)"
+            >
+              {{ "dashboard.Create Coupon" | translate }}
+            </button>
+            <button
+              *ngIf="couponId !== 0"
+              class="btn btn-success my-3"
+              (click)="updateCoupon(couponId, layer)"
+            >
+              {{ "dashboard.Update Coupon" | translate }}
+            </button>
+            <p #alert class="alert alert-danger d-none">
+              {{ "dashboard.Coupon alert" | translate }}
+            </p>
+          </div>
+        </form>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<ng-template #notload>
+  <div class="d-flex justify-content-center align-items-center vh-100">
+    <app-loading></app-loading>
+  </div>
+</ng-template>
+
+

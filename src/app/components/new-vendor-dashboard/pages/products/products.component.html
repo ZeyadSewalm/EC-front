@@ -1,0 +1,210 @@
+<div class="product-form-container">
+  <div class="form-header text-center mb-4">
+    <h2 class="form-title">🛍️ Product Form</h2>
+    <p class="text-muted">Fill out the details below to create a product</p>
+  </div>
+
+  <form [formGroup]="productForm" (ngSubmit)="onSubmit()">
+    <!-- Thumbnail -->
+    <div class="form-group mb-3">
+      <label>Thumbnail</label>
+      <input
+        type="file"
+        class="form-control"
+        (change)="onThumbnailChange($event)"
+        accept="image/*"
+      />
+    </div>
+
+    <!-- Title -->
+    <div class="form-group mb-3">
+      <label>Title</label>
+      <input type="text" formControlName="title_en" class="form-control" />
+      <div class="text-danger mt-1"
+        *ngIf="productForm.get('title_en')?.hasError('required')
+        && (productForm.get('title_en')?.touched || productForm.touched)">
+        Title is required.
+      </div>
+    </div>
+
+    <!-- Description -->
+    <div class="form-group mb-3">
+      <label>Description</label>
+      <textarea formControlName="description_en" class="form-control"></textarea>
+      <div class="text-danger mt-1"
+        *ngIf="productForm.get('description_en')?.hasError('required')
+        && (productForm.get('description_en')?.touched || productForm.touched)">
+        Description is required.
+      </div>
+    </div>
+
+    <!-- Category, Brand, Stock -->
+    <div class="row mb-3">
+      <div class="col-md-4 form-group mb-3">
+        <label>Category</label>
+        <select class="form-select" formControlName="category">
+          <option value="">-- Select --</option>
+          <option *ngFor="let cat of categories" [ngValue]="cat">{{ cat.name }}</option>
+        </select>
+        <div class="text-danger mt-1"
+          *ngIf="productForm.get('category')?.hasError('required')
+          && (productForm.get('category')?.touched || productForm.touched)">
+          Category is required.
+        </div>
+      </div>
+
+      <div class="col-md-4 form-group mb-3">
+        <label>Brand</label>
+        <select class="form-select" formControlName="brand">
+          <option value="">-- Select --</option>
+          <option *ngFor="let brand of brands" [ngValue]="brand">{{ brand.name }}</option>
+        </select>
+        <div class="text-danger mt-1"
+          *ngIf="productForm.get('brand')?.hasError('required')
+          && (productForm.get('brand')?.touched || productForm.touched)">
+          Brand is required.
+        </div>
+      </div>
+
+      <div class="col-md-4 form-group">
+        <label>Stock Qty</label>
+        <input type="number" class="form-control" formControlName="stock_qty" />
+        <div class="text-danger mt-1"
+          *ngIf="productForm.get('stock_qty')?.hasError('required')
+          && (productForm.get('stock_qty')?.touched || productForm.touched)">
+          Stock quantity is required.
+        </div>
+      </div>
+    </div>
+
+    <!-- Price, SKU, New Collection -->
+    <div class="row">
+      <div class="col-md-4 form-group">
+        <label>Price (EGP)</label>
+        <input type="number" class="form-control" formControlName="price_EGP" />
+        <div class="text-danger mt-1"
+          *ngIf="productForm.get('price_EGP')?.hasError('required')
+          && (productForm.get('price_EGP')?.touched || productForm.touched)">
+          Price is required.
+        </div>
+      </div>
+
+      <div class="col-md-4 form-group">
+        <label>SKU</label>
+        <input type="text" placeholder="enter sku" class="form-control" formControlName="sku" />
+        <div
+        *ngIf="
+          productForm.get('sku')?.touched &&
+          productForm.get('sku')?.hasError('required')
+        "
+        class="text-danger mt-1"
+      >
+        SKU is required.
+      </div>
+      </div>
+
+      <div class="col-md-4 form-check mt-4">
+        <input type="checkbox" class="form-check-input" formControlName="is_new_collections" />
+        <label class="form-check-label">New Collection</label>
+      </div>
+    </div>
+
+    <!-- Specifications -->
+    <div class="form-section">
+      <h4>Specifications</h4>
+      <div formArrayName="specifications">
+        <div *ngFor="let spec of specifications.controls; let i = index" [formGroupName]="i" class="row g-2 mb-2">
+          <div class="col-md-5">
+            <input type="text" formControlName="title_en" class="form-control" placeholder="Title" />
+          </div>
+          <div class="col-md-5">
+            <input type="text" formControlName="content_en" class="form-control" placeholder="Content" />
+          </div>
+          <div class="col-md-2">
+            <button type="button" class="btn btn-outline-danger w-100" (click)="removeFormItem(specifications, i)">
+              Remove
+            </button>
+          </div>
+        </div>
+      </div>
+      <button type="button" class="btn btn-outline-primary" (click)="addSpecification()">+ Add Specification</button>
+    </div>
+
+    <!-- Colors -->
+    <div class="form-section">
+      <h4>Colors</h4>
+      <div formArrayName="colors">
+        <div *ngFor="let color of colors.controls; let i = index" [formGroupName]="i" class="row g-2 mb-2">
+          <div class="col-md-10">
+            <input type="text" formControlName="name_en" class="form-control" placeholder="Color Name" />
+            <div *ngIf="color.get('name_en')?.touched && color.get('name_en')?.hasError('required')" class="text-danger mt-1">
+              Color name is required.
+            </div>
+          </div>
+          <div class="col-md-2">
+            <button type="button" class="btn btn-outline-danger w-100" (click)="removeFormItem(colors, i)">
+              Remove
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="text-danger mt-1"
+        *ngIf="productForm.get('colors')?.hasError('required')
+        && (productForm.get('colors')?.touched || productForm.touched)">
+        At least one color is required.
+      </div>
+      <button type="button" class="btn btn-outline-primary" (click)="addColor()">+ Add Color</button>
+    </div>
+
+    <!-- Sizes -->
+    <div class="form-section">
+      <h4>Sizes</h4>
+      <div formArrayName="sizes">
+        <div *ngFor="let size of sizes.controls; let i = index" [formGroupName]="i" class="row g-2 mb-2">
+          <div class="col-md-10">
+            <input type="text" formControlName="name_en" class="form-control" placeholder="Size" />
+            <div *ngIf="size.get('name_en')?.touched && size.get('name_en')?.hasError('required')" class="text-danger mt-1">
+              Size is required.
+            </div>
+          </div>
+          <div class="col-md-2">
+            <button type="button" class="btn btn-outline-danger w-100" (click)="removeFormItem(sizes, i)">
+              Remove
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="text-danger mt-1"
+        *ngIf="productForm.get('sizes')?.hasError('required')
+        && (productForm.get('sizes')?.touched || productForm.touched)">
+        At least one size is required.
+      </div>
+      <button type="button" class="btn btn-outline-primary" (click)="addSize()">+ Add Size</button>
+    </div>
+
+    <!-- Gallery -->
+    <div class="form-section">
+      <h4>Gallery</h4>
+      <div formArrayName="galleries">
+        <div *ngFor="let gallery of galleries.controls; let i = index" [formGroupName]="i" class="row g-2 mb-2">
+          <div class="col-md-10">
+            <input type="file" class="form-control" (change)="onGalleryChange($event)" multiple accept="image/*" />
+          </div>
+          <div class="col-md-2">
+            <button type="button" class="btn btn-outline-danger w-100" (click)="removeFormItem(galleries, i)">
+              Remove
+            </button>
+          </div>
+        </div>
+      </div>
+      <button type="button" class="btn btn-outline-primary" (click)="addGallery()">+ Add Gallery</button>
+    </div>
+
+    <!-- Submit -->
+    <div class="form-actions mt-3 d-flex justify-content-center">
+      <button type="submit" class="btn btn-outline-success">
+        {{ productData ? "Update Product" : "Add Product" }}
+      </button>
+    </div>
+  </form>
+</div>

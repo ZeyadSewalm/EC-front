@@ -1,0 +1,52 @@
+<!-- Main container for the entire layout -->
+<div
+  class="d-flex flex-column flex-md-row vh-100 bg-light font-sans text-muted"
+>
+  <!-- The overlay that appears on small screens when the sidebar is open -->
+  <div
+    class="position-fixed inset-0 bg-dark bg-opacity-50 z-index-1000 d-md-none"
+    [class.d-none]="!sidebarOpen()"
+    (click)="sidebarOpen.set(false)"
+  ></div>
+
+  <!-- The sidebar component -->
+  <app-sidebar
+    [sidebarOpen]="sidebarOpen()"
+    (sidebarClose)="sidebarOpen.set(false)"
+  ></app-sidebar>
+
+  <!-- The main content area -->
+  <main class="d-flex flex-grow-1 overflow-auto p-4 position-relative">
+    <!-- Sidebar toggle button for small screens -->
+    <button
+      (click)="sidebarOpen.set(true)"
+      class="btn btn-primary d-md-none position-fixed top-4 start-4 rounded-circle shadow-lg"
+      title="Open Menu"
+    >
+      <svg
+        class="bi"
+        width="24"
+        height="24"
+        fill="currentColor"
+        viewBox="0 0 16 16"
+      >
+        <path
+          fill-rule="evenodd"
+          d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"
+        />
+      </svg>
+    </button>
+
+    <!-- Main content area for router-driven content -->
+    <div
+      class="card p-4 rounded-3 shadow-sm flex-grow-1"
+      style="height: fit-content"
+    >
+      <div class="row g-3">
+        <div class="col-12">
+          <router-outlet></router-outlet>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>

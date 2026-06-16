@@ -1,0 +1,17 @@
+<section *ngIf="render" [dir]="isArabic() ? 'rtl' : 'ltr'">
+    <h4><i class="fa-solid fa-bell text-prim fs-2"></i> {{'customerDashboard.Notifications' | translate}} </h4>
+    <div class="mt-4" [lang]="isArabic()? 'ar':'en'">
+        <div class="notificationCard border border-1 rounded-2 shadow my-3 p-3" *ngFor="let Notification of allNotifications">
+            <h5 class="text-prim fw-bold">{{'customerDashboard.New Order !' | translate}}</h5>
+            <p class="fw-bold">{{'customerDashboard.This Order' | translate}} <span class="text-prim">#{{Notification.order.oid}}</span> {{'customerDashboard.Was Done Successfull' | translate}}</p>
+            <p><span class="text-main fw-bolder">{{'cart.Total' | translate}} :</span> {{Notification.order.total | currency : ' EGP '}}</p>
+            <p><span class="text-main fw-bolder">{{'cart.Shipping' | translate}} :</span> {{Notification.order.shipping_amount | currency : ' EGP '}}</p>
+            <p><span class="text-main fw-bolder">{{'cart.Tax' | translate}} :</span> {{Notification.order.tax_fee | currency : ' EGP '}}</p>
+            <p><span class="text-main fw-bolder">{{'cart.Service Fee' | translate}}  :</span> {{Notification.order.service_fee | currency : ' EGP '}}</p>
+            <button (click)="markAsRead(Notification.id)" class="read btn btn-success px-3 py-1 mt-2 text-white">{{'customerDashboard.Mark as read' | translate}} <i lang="en" class="fa-regular fa-eye"></i></button> 
+        </div>
+        <div class="p-3 rounded-2 shadow" *ngIf="allNotifications.length == 0">
+            <p class="h1 text-prim text-center">{{'customerDashboard.No notifications exist' | translate}} <img src="./assets/notification.png" alt="" height="80"></p>
+        </div>
+    </div>
+</section>

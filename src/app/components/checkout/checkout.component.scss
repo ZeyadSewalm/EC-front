@@ -1,0 +1,50 @@
+$Dark_blue : #15263E;
+form {
+    input {
+
+        background-color: light-dark(rgb(232, 240, 254), rgba(70, 90, 126, 0.4)) !important;
+
+    &:focus {
+        border-color:var(--bs-border-color);
+        outline: 0;
+        box-shadow: none;
+    }
+}
+}
+.copon {
+    input{
+        width: 100%;
+        background-color: white;
+    }
+    button {
+        width: 25%;
+        border-radius: 10px;
+        background-color: rgb(30, 137, 30);
+        border: none;
+        transition: 0.3s;
+        &:hover {
+            background-color: rgb(22, 132, 39);
+        }
+    }
+}
+.stripe {
+    background-color: var(--main-color);
+    transition: 0.3s;
+    &:hover {
+        background-color: $Dark_blue
+    }
+}
+.layer {
+    z-index: 99999;
+    background-color: rgba(0, 0, 0, 0.551);
+    .contain {
+        min-width: 300px;
+        background-color: white;
+    }
+}
+.discount {
+    color: rgb(26, 187, 26);
+}
+input {
+    margin: 15px 0;
+}

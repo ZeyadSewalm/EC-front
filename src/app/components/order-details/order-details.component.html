@@ -1,0 +1,57 @@
+<section *ngIf="render" [dir]="isArabic() ? 'rtl' : 'ltr'">
+    <h4><i class="fa-solid fa-cart-shopping"></i> {{'customerDashboard.Order Details' | translate}} : <span class="text-secondary h5">#{{orderDetails.oid}}</span></h4>
+    <div class="d-flex flex-wrap justify-content-start align-items-center gap-3 mt-4">
+        <div class="totalCard p-3 shadow rounded-2">
+            <p>{{'cart.Total' | translate}}</p>
+            <p class="my-3 h4">{{orderDetails.total | currency : ' EGP '}}</p>
+        </div>
+        <div class="payStatusCard p-3 shadow rounded-2">
+            <p>{{'customerDashboard.Payment Status' | translate}}</p>
+            <p class="my-3 h4">{{orderDetails.payment_status}}</p>
+        </div>
+        <div class="orderStatusCard p-3 shadow rounded-2">
+            <p>{{'customerDashboard.Order Status' | translate}}</p>
+            <p class="my-3 h4">{{orderDetails.order_status}}</p>
+        </div>
+        <div class="shippingAmountCard p-3 shadow rounded-2">
+            <p>{{'cart.Shipping Amount' | translate}}</p>
+            <p class="my-3 h4">{{orderDetails.shipping_amount | currency : ' EGP '}}</p>
+        </div>
+
+        <div class="taxFee p-3 shadow rounded-2">
+            <p>{{'cart.Tax Fee' | translate}}</p>
+            <p class="my-3 h4">{{orderDetails.tax_fee | currency : ' EGP '}}</p>
+        </div>
+        <div class="serviceFee p-3 shadow rounded-2">
+            <p>{{'cart.Service Fee' | translate}}</p>
+            <p class="my-3 h4">{{orderDetails.service_fee | currency : ' EGP '}}</p>
+        </div>
+        <div class="discountFee p-3 shadow rounded-2">
+            <p>{{'cart.Discount Fee' | translate}}</p>
+            <p class="my-3 h4">{{orderDetails.saved | currency : ' EGP '}}</p>
+            <img src="https://levado-ecommerce-api.onrender.com/media/vendor.jpg" alt="">
+        </div>
+    </div>
+    <div class="overflow-auto shadow mt-5 rounded-3">
+    <table class="table align-middle mb-0">
+        <thead>
+            <th>{{'products.product' | translate}}</th>
+            <th>{{'products.Price' | translate}}</th>
+            <th>{{'customerDashboard.Qty' | translate}}</th>
+            <th>{{'cart.Total' | translate}}</th>
+            <th class="text-danger">{{'cart.Discount' | translate}}</th>
+        </thead>
+        <tbody>
+            <tr *ngFor="let order of orderDetails.orderitem">
+                <td><img [src]="order.product.image" [alt]="order.product.title" height="100px" width="100px"> <span class="ms-2 fw-bold">{{order.product.title}}</span></td>
+                <td *ngIf="currency == 'AED' ">{{order.product.price_AED}} {{'currency.AED' | translate}}</td>
+                <td *ngIf="currency == 'EGP' ">{{order.product.price_EGP}} {{'currency.EGP' | translate}}</td>
+                <td>{{order.qty}}</td>
+                <td *ngIf="currency == 'AED' ">{{calcTotal(order.price , order.qty)}} {{'currency.AED' | translate}}</td>
+                <td *ngIf="currency == 'EGP' ">{{calcTotal(order.price , order.qty)}} {{'currency.EGP' | translate}}</td>
+                <td class="text-danger">- {{order.saved| currency : ' EGP '}}</td>
+            </tr>
+        </tbody>
+    </table>
+    </div>
+</section>

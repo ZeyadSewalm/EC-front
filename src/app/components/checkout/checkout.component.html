@@ -1,0 +1,259 @@
+<section
+  class="my-5 p-3"
+  [dir]="isArabic() ? 'rtl' : 'ltr'"
+  [lang]="isArabic() ? 'ar' : 'en'"
+>
+  <div class="container">
+    <div class="row g-5">
+      <div class="col-md-8">
+        <p class="alert alert-warning">
+          {{ "cart.Review Your Shipping & Order Details" | translate }}
+        </p>
+        <h4 class="my-4">{{ "cart.Shipping Address" | translate }}</h4>
+        <form [formGroup]="shippingAddress">
+          <!-- <div>
+            <label for="name">{{ "cart.Full Name" | translate }}</label>
+            <input
+              class="form-control w-100"
+              type="text"
+              id="name"
+              formControlName="full_name"
+              readonly
+            />
+          </div> -->
+          <div class="d-flex justify-content-between gap-3">
+            <div class="w-50">
+              <label for="name">{{ "cart.Full Name" | translate }}</label>
+              <input
+                class="form-control w-100"
+                type="text"
+                id="name"
+                formControlName="full_name"
+                readonly
+              />
+            </div>
+            <div class="w-50">
+              <label for="phone"> {{ "cart.Mobile" | translate }}</label>
+              <input
+                class="form-control w-100"
+                type="tel"
+                id="phone"
+                formControlName="phone"
+                readonly
+              />
+            </div>
+          </div>
+          <div class="d-flex justify-content-between gap-3">
+            <div class="w-50">
+              <label for="address"> {{ "cart.Address" | translate }}</label>
+              <input
+                class="form-control w-100"
+                type="text"
+                id="address"
+                formControlName="Address"
+                readonly
+              />
+            </div>
+            <div class="w-50">
+              <label for="City"> {{ "cart.City" | translate }}</label>
+              <input
+                class="form-control w-100"
+                type="text"
+                id="City"
+                formControlName="City"
+                readonly
+              />
+            </div>
+          </div>
+          <div class="d-flex justify-content-between gap-3">
+            <div class="w-50">
+              <label for="State"> {{ "cart.governorate" | translate }}</label>
+              <input
+                class="form-control w-100"
+                type="text"
+                id="State"
+                formControlName="State"
+                readonly
+              />
+            </div>
+            <!-- <div class="w-50">
+              <label for="Country"> {{ "cart.Country" | translate }}</label>
+              <input
+                class="form-control w-100"
+                type="tel"
+                id="Country"
+                formControlName="Country"
+                readonly
+              />
+            </div> -->
+          </div>
+        </form>
+      </div>
+      <div class="col-md-4">
+        <h5 class="mb-4">{{ "cart.Cart Summary" | translate }}</h5>
+        <p class="d-flex flex-wrap justify-content-between align-items-center">
+          <span class="text-secondary">{{ "cart.Subtotal" | translate }}</span
+          ><span>{{ orderData.sub_total | currency : " EGP " }}</span>
+        </p>
+        <p class="d-flex flex-wrap justify-content-between align-items-center">
+          <span class="text-secondary">{{ "cart.Shipping" | translate }}</span
+          ><span>{{
+            orderData.shipping_amount
+              | currency
+                : " EGP
+            "
+          }}</span>
+        </p>
+        <p class="d-flex flex-wrap justify-content-between align-items-center">
+          <span class="text-secondary">{{ "cart.Tax" | translate }}</span
+          ><span>{{
+            orderData.tax_fee
+              | currency
+                : " EGP
+            "
+          }}</span>
+        </p>
+        <p class="d-flex flex-wrap justify-content-between align-items-center">
+          <span class="text-secondary">{{
+            "cart.Service Fee" | translate
+          }}</span
+          ><span>{{
+            orderData.service_fee
+              | currency
+                : " EGP
+            "
+          }}</span>
+        </p>
+        <p
+          *ngIf="discount"
+          class="discount d-flex flex-wrap justify-content-between align-items-center"
+        >
+          <span>{{ "cart.Discount" | translate }}</span
+          ><span>{{ orderData.saved | currency : " EGP " }}</span>
+        </p>
+        <hr />
+        <p
+          class="d-flex flex-wrap justify-content-between align-items-center fw-bold"
+        >
+          <span>{{ "cart.Total" | translate }}</span>
+          <span>
+            <p
+              *ngIf="discount"
+              class="text-danger text-decoration-line-through small text-center"
+            >
+              {{ orderData.initial_total | currency : " EGP " }}
+            </p>
+            {{ orderData.total | currency : " EGP " }}
+          </span>
+        </p>
+        <div *ngIf="itemsCartCount !== 0">
+          <div
+            class="copon d-flex flex-wrap justify-content-between align-items-center shadow mt-5 p-3 rounded-2"
+          >
+          <h4>enter your Coupon</h4>
+            <input
+              #code
+              type="text"
+              placeholder="{{ 'cart.Enter Your Code' | translate }}"
+              class="py-2 form-control"
+            />
+            <button
+              lang="en"
+              class="py-1 mx-auto"
+              (click)="applyCopon(code.value)"
+            >
+              <i class="fa-solid fa-check text-white"></i>
+            </button>
+          </div>
+          <form
+            [action]="
+              'https://levado-ecommerce-api.onrender.com/api/v1/paymob-test/' +
+              orderId +
+              '/' +
+              paymentMethod +
+              '/'
+            "
+            method="GET"
+            (ngSubmit)="submitForm()"
+          >
+            <div class="shadow p-3 d-flex mt-4 mb-4">
+              <div class="d-flex flex-wrap">
+                <label>{{ "cart.Payment Method" | translate }} :</label>
+                <select
+                  class="form-select mt-2"
+                  [(ngModel)]="paymentMethod"
+                  name="paymentMethod"
+                  (change)="setPaymentMethod($event.target)"
+                >
+                  <option value="" selected disabled>
+                    {{ "cart.Select Payment Method" | translate }}
+                  </option>
+                  <option value="cash">{{ "cart.cash" | translate }}</option>
+                  <option value="card">{{ "cart.Card" | translate }}</option>
+                  <option value="wallet">
+                    {{ "cart.Wallet" | translate }}
+                  </option>
+                </select>
+                <ng-container *ngIf="paymentMethod == 'wallet'">
+                  <input
+                    [(ngModel)]="phone"
+                    [ngModelOptions]="{ standalone: true }"
+                    type="text"
+                    class="form-control"
+                    style="border: dashed 1px gray"
+                    placeholder="Enter wallet number"
+                  />
+                </ng-container>
+              </div>
+            </div>
+            <button
+              lang="en"
+              type="submit"
+              class="btn btn-primary btn-rounded w-100 mt-2"
+              [style.backgroundColor]="'#3B5998'"
+            >
+              {{ "cart.Checkout Now" | translate }}
+              <i class="fas fa-money-check-alt"></i>
+            </button>
+          </form>
+        </div>
+      </div>
+      <div class="col-md-12"></div>
+    </div>
+  </div>
+</section>
+<div
+  class="layer position-fixed w-100 top-0 bottom-0 d-flex justify-content-center align-items-center"
+  *ngIf="codeMsgError || codeMsgSuccess || codeMsgWarning"
+>
+  <div class="rounded-3 contain" [dir]="isArabic() ? 'rtl' : 'ltr'">
+    <div
+      class="p-5 py-5 d-flex flex-column justify-content-center align-items-center shadow"
+    >
+      <i
+        *ngIf="codeMsgSuccess"
+        class="fa-solid fa-circle-check fa-3x text-success"
+      ></i>
+      <i
+        *ngIf="codeMsgWarning"
+        class="fa-solid fa-triangle-exclamation fa-3x text-warning"
+      ></i>
+      <i
+        *ngIf="codeMsgError"
+        class="fa-solid fa-circle-xmark fa-3x text-danger"
+      ></i>
+      <p *ngIf="codeMsgSuccess" class="h3 my-5">
+        {{ "cart." + codeMsgSuccess | translate }}
+      </p>
+      <p *ngIf="codeMsgWarning" class="h3 my-5">
+        {{ "cart." + codeMsgWarning | translate }}
+      </p>
+      <p *ngIf="codeMsgError" class="h3 my-5">
+        {{ codeMsgError | translate }}
+      </p>
+      <button class="btn btn-danger px-4 py-1" (click)="closeCoponAlert()">
+        {{ "cart.Close" | translate }}
+      </button>
+    </div>
+  </div>
+</div>

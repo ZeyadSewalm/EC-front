@@ -1,0 +1,55 @@
+<section class="container my-5" *ngIf="render" [dir]="isArabic() ? 'rtl' : 'ltr'">
+
+    <div [class.align-items-center]="allProducts.length==0" *ngIf="!loading">
+
+        <ng-container *ngIf="allProducts.length > 0">
+            <h1 class="mb-4" [lang]="isArabic()? 'ar':'en'">{{"wishlist.My Wishlist" | translate}}
+                <img src="./assets/wishlist.png" alt="" height="50" routerLink="/home" role="button">
+            </h1>
+            <div class="row g-5">
+                <div class="col-xl-3 col-lg-4 col-md-6" *ngFor="let item of allProducts">
+                    <div class="single-product position-relative">
+                        <div class="product">
+                            <div *ngIf="!wishlistData.includes($any(item.product.id))"
+                                class="heart shadow d-flex align-items-center justify-content-center"
+                                (click)="addToWhishlist(item.product.id)">
+                                <i class="fa-regular fa-heart fs-5 cursor-pointer"></i>
+                            </div>
+                            <div *ngIf="wishlistData.includes($any(item.product.id))"
+                                class="heart shadow d-flex align-items-center justify-content-center fav"
+                                (click)="addToWhishlist(item.product.id)">
+                                <i class="fa-solid fa-heart fs-5 cursor-pointer"></i>
+                            </div>
+                            <button class="btn main-btn py-1 px-4" [lang]="isArabic()? 'ar':'en'" [routerLink]="['/product/details', item.product.slug]">
+                                {{'home.Show Product' | translate}}</button>
+                            <img [src]="(item.product.image.length > 0 ? item.product.image : './assets/placeholder/placeholder2.png')"
+                                defaultImage="./assets/placeholder/placeholder2.png" [useSrcset]="true"
+                                [lazyLoad]="item.product.image" alt="default image" height="300" class="w-100 object-fit-contain"
+                                (error)="item.product.image = './assets/placeholder/placeholder2.png'" />
+                            <div class="badge">
+                                <span>{{'home.new'|translate}}</span>
+                            </div>
+                        </div>
+                        <div class="cursor-pointer mt-2" [routerLink]="['/product/details', item.product.slug]">
+                            <span>{{item.product.category.title|uppercase}}</span>
+                            <h6 class="title-cell">{{item.product.title}}</h6>
+                            <div class="d-flex flex-wrap justify-content-between pe-1">
+                                <p [lang]="isArabic()? 'ar':'en'">{{item.product.price + ' '}}{{'currency.'+item.product.currency|translate}}</p>
+                                <div>
+                                    <i [class.rating-color]="rate <=item.product.rating"
+                                        *ngFor="let rate of [1,2,3,4,5]" class="fa-solid fa-star"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </ng-container>
+        <div class="py-3 text-white rounded-2 mx-auto" *ngIf="allProducts.length == 0" [lang]="isArabic()? 'ar':'en'">
+            <p class="text-center h1 text-prim">{{'wishlist.Your Wishlist is empty' | translate}}<img src="./assets/wishlist.png" alt="" height="80" routerLink="/home" role="button"></p>
+        </div>
+    </div>
+</section>
+<div class="text-center py-5" *ngIf="loading">
+    <app-loading></app-loading>
+</div>

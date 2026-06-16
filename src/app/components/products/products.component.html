@@ -1,0 +1,242 @@
+<!-- <div class="image">
+    <h2>
+        <ng-container *ngFor="let categoryName of selectedCategoryFilterNames; let isLast = last">
+            {{ categoryName }}
+            <span *ngIf="!isLast">, </span>
+        </ng-container>
+    </h2>
+</div> -->
+<section>
+    <div>
+        <button class="filterButton rounded-3 py-1 mx-auto my-3" type="button"
+            (click)="showFilterlist(Filterlist)">{{'products.Filter' | translate}} <i
+                class="fa-solid fa-filter fa-1x"></i></button>
+        <ul #Filterlist class="filterList mx-auto mt-2 d-none rounded-2">
+            <div class="p-3">
+                <div class="position-relative">
+                    <i class="fa fa-solid fa-search search-icon"></i>
+                    <input type="text" class="form-control mb-2 search-input"
+                        placeholder="{{'products.Search' | translate}}......" [(ngModel)]="searchValue"
+                        (ngModelChange)="onfilterChange()">
+                </div>
+                <div [class.d-none]="categoryId">
+                    <h2 class="h4 border-bottom pb-2">
+                        {{'products.Categories' | translate}}</h2>
+                    <div class="d-flex flex-column gap-3 "
+                        >
+                        <div *ngFor="let category of categories" class="field-checkbox">
+                            <p-checkbox class="cursor-pointer" [label]="category.name" name="group"
+                                [value]="category.key" [(ngModel)]="selectedCategories"
+                                (onChange)="onCategoryFilterChange(selectedCategories)"
+                                (ngModelChange)="onfilterChange()" ngmode>
+                            </p-checkbox>
+                        </div>
+                    </div>
+                </div>
+                <div [class.d-none]="brandId">
+                    <h2 class="h4 border-bottom mt-3 pb-2">
+                        {{'products.Brands' | translate}}</h2>
+                    <div class="d-flex flex-column gap-3"
+                        >
+                        <div *ngFor="let brand of brands" class="field-checkbox">
+                            <p-checkbox class="cursor-pointer" [label]="brand.name" name="group" [value]="brand.key"
+                                [(ngModel)]="selectedBrands" (ngModelChange)="onfilterChange()"></p-checkbox>
+                        </div>
+                    </div>
+                </div>
+                <h2 class="h4 mt-3 border-bottom pb-2" >
+                    {{'products.Filter By' | translate}}</h2>
+                <div class="d-flex gap-3 mb-3 align-items-center">
+                    <h3 class="h6">{{'products.Price' | translate}}</h3>
+                    <button class="btn-main" (click)="onfilterChange()"><i class="fa-solid fa-rotate"></i></button>
+                </div>
+                <p-slider [(ngModel)]="rangeValues" [min]="100" [max]="5000" [range]="true"></p-slider>
+                <!-- Display range -->
+                <div class="range-label my-3">
+                    <p><strong>{{'products.Range' | translate}}</strong> : {{rangeValues[0] + '
+                        '}}{{'currency.'+this.currency|translate}} - {{rangeValues[1] + '
+                        '}}{{'currency.'+this.currency|translate}}</p>
+                </div>
+                <h2 class="h4 my-3 border-bottom pb-2">
+                    {{'products.Rating' | translate}}</h2>
+                <p-rating [(ngModel)]="Ratingvalue" [cancel]="false" (ngModelChange)="onfilterChange()"></p-rating>
+                <button class="reset-btn d-block mt-3" (click)="resetFilters()">{{'products.Reset All' |
+                    translate}}</button>
+            </div>
+        </ul>
+    </div>
+
+    <div class="container">
+        <div class="row g-5 align-items-center py-5" [class.align-items-center]="allProducts.length==0">
+            <div class="filter col-sm-4 col-lg-3 border-end pt-3">
+               <div style="position: sticky; top: 0px;">
+                <div class="position-relative">
+                  <i class="fa fa-solid fa-search search-icon"></i>
+                  <input type="text" class="form-control mb-2 search-input"
+                      placeholder="{{'products.Search' | translate}}......" [(ngModel)]="searchValue"
+                      (ngModelChange)="onfilterChange()">
+              </div>
+              <div [class.d-none]="categoryId">
+                  <h2 class="h4 border-bottom pb-2">{{'products.Categories' | translate}}</h2>
+                  <div class="d-flex flex-column gap-3">
+                      <div *ngFor="let category of categories" class="field-checkbox">
+                          <p-checkbox class="cursor-pointer" [label]="category.name" name="group"
+                              [value]="category.key" [(ngModel)]="selectedCategories"
+                              (onChange)="onCategoryFilterChange(selectedCategories)"
+                              (ngModelChange)="onfilterChange()" ngmode></p-checkbox>
+                      </div>
+                  </div>
+              </div>
+              <div [class.d-none]="brandId">
+                  <h2 class="h4 border-bottom mt-3 pb-2">{{'products.Brands' | translate}}</h2>
+                  <div class="d-flex flex-column gap-3">
+                      <div *ngFor="let brand of brands" class="field-checkbox">
+                          <p-checkbox class="cursor-pointer" [label]="brand.name" name="group" [value]="brand.key"
+                              [(ngModel)]="selectedBrands" (ngModelChange)="onfilterChange()"></p-checkbox>
+                      </div>
+                  </div>
+              </div>
+              <h2 class="h4 mt-3 border-bottom pb-2">{{'products.Filter By' | translate}}</h2>
+              <div class="d-flex gap-3 mb-3 align-items-center">
+                  <h3 class="h6">{{'products.Price' | translate}}</h3>
+                  <button class="btn-main" (click)="onfilterChange()"><i class="fa-solid fa-rotate"></i></button>
+              </div>
+              <p-slider [(ngModel)]="rangeValues" [min]="100" [max]="5000" [range]="true"></p-slider>
+              <!-- Display range -->
+              <div class="range-label my-3">
+                  <p><strong>{{'products.Range' | translate}}</strong> : {{rangeValues[0] + '
+                      '}}{{'currency.'+this.currency|translate}} - {{rangeValues[1] + '
+                      '}}{{'currency.'+this.currency|translate}}</p>
+              </div>
+              <h2 class="h4 my-3 border-bottom pb-2">{{'products.Rating' | translate}}</h2>
+              <p-rating [(ngModel)]="Ratingvalue" [cancel]="false" (ngModelChange)="onfilterChange()"></p-rating>
+              <button class="reset-btn d-block mt-3" (click)="resetFilters()">{{'products.Reset All' |
+                  translate}}</button>
+               </div>
+            </div>
+            <div class="col-sm-8 col-lg-9 mx-auto" *ngIf="!productLoading">
+                <ng-container *ngIf="allProducts.length >0 else noProduct">
+                    <div class="row g-4 ">
+                        <div class="col-xl-4 col-lg-6" *ngFor="let item of allProducts">
+                            <div class="single-product position-relative">
+                                <div class="product">
+                                    <div *ngIf="!wishlistData.includes($any(item.id))"
+                                        class="heart shadow d-flex align-items-center justify-content-center"
+                                        (click)="addAndRemoveWhishlist(item.id , layer)">
+                                        <i class="fa-regular fa-heart fs-5 cursor-pointer"></i>
+                                    </div>
+                                    <div *ngIf="wishlistData.includes($any(item.id))"
+                                        class="heart shadow d-flex align-items-center justify-content-center fav"
+                                        (click)="addAndRemoveWhishlist(item.id , layer)">
+                                        <i class="fa-solid fa-heart fs-5 cursor-pointer"></i>
+                                    </div>
+                                    <button class="btn main-btn py-2"
+                                        [routerLink]="['/product/details', item.slug]">
+                                        {{'home.Show Product'|translate}}</button>
+                                    <img [src]="(item.image.length > 0 ? item.image : './assets/placeholder/placeholder2.png')"
+                                        defaultImage="./assets/placeholder/placeholder2.png" [useSrcset]="true"
+                                        [lazyLoad]="item.image" alt="Product Image" height="300"
+                                        class="w-100 default-image"
+                                        (error)="item.image = './assets/placeholder/placeholder2.png'" />
+                                    <div class="badge">
+                                        <span>{{'home.new'|translate}}</span>
+                                    </div>
+                                </div>
+                                <div class="cursor-pointer"
+                                    [routerLink]="['/product/details',item.slug]">
+                                    <span>{{item.category|uppercase}}</span>
+                                    <h6 class="title-cell">{{item.title}}</h6>
+                                    <div class="d-flex flex-wrap gap-2 justify-content-between align-items-center">
+                                        <p>{{item.price + '
+                                            '}}{{'currency.'+item.currency|translate}}</p>
+                                        <div>
+                                            <i [class.rating-color]="rate <=item.rating"
+                                                *ngFor="let rate of [1,2,3,4,5]" class="fa-solid fa-star"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-center my-5" *ngIf="totalPages>1 && !isArabic()">
+                        <div class="pagination">
+                            <button class="btn-pagination" (click)="onPreviousPage()"
+                                [style.pointer-events]="currentPage==1 ? 'none' : 'auto'">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="btn-icon" fill="none" viewBox="0 0 24 24"
+                                    stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M15 19l-7-7 7-7" />
+                                </svg>
+                            </button>
+                            <ng-container *ngFor="let pageNum of getPageNumbers()">
+                                <button class="page-link" (click)="onPageChange(pageNum)"
+                                    [class.active-pagination]="pageNum==currentPage">{{pageNum}}</button>
+                            </ng-container>
+                            <button class="btn-pagination" (click)="onNextPage()"
+                                [style.pointer-events]="currentPage==totalPages ? 'none' : 'auto'">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="btn-icon" fill="none" viewBox="0 0 24 24"
+                                    stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M9 5l7 7-7 7" />
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-center my-5" *ngIf="totalPages > 1 &&isArabic()">
+                        <div class="pagination">
+                            <button class="btn-pagination" (click)="onPreviousPage()"
+                                [style.pointer-events]="currentPage == 1 ? 'none' : 'auto'">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="btn-icon" fill="none" viewBox="0 0 24 24"
+                                    stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M9 5l7 7-7 7" />
+                                </svg>
+                            </button>
+                            <ng-container *ngFor="let pageNum of getPageNumbers()">
+                                <button class="page-link" (click)="onPageChange(pageNum)"
+                                    [class.active-pagination]="pageNum == currentPage">{{pageNum}}</button>
+                            </ng-container>
+                            <button class="btn-pagination" (click)="onNextPage()"
+                                [style.pointer-events]="currentPage == totalPages ? 'none' : 'auto'">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="btn-icon" fill="none" viewBox="0 0 24 24"
+                                    stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M15 19l-7-7 7-7" />
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+
+
+                </ng-container>
+                <ng-template #noProduct>
+                    <div class="d-flex justify-content-center align-items-center">
+                        <img src="./assets/shopping/no-product-found.jpg" alt="">
+                    </div>
+                </ng-template>
+            </div>
+            <!-- loading product -->
+            <div class="col-sm-8 col-lg-9 text-center py-5" *ngIf="productLoading">
+                <app-loading></app-loading>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<!-- alert user should sign in -->
+<div #layer class="layerLogin d-none">
+    <div
+        class="alertLogin p-4 bg-white rounded-3 d-flex flex-column align-items-center justify-content-between position-relative">
+        <i class="fa-regular fa-circle-xmark position-absolute end-0 top-0 fa-2x me-2 mt-2" role="button"
+            (click)="closeLayer(layer)"></i>
+        <div class="text-center mt-4">
+            <p class="h2">Welcome</p>
+            <p class="h4 mt-3">Login to your account</p>
+        </div>
+        <button class="btn btn-success  w-75 my-4" routerLink="/login">Login</button>
+        <p>Don't have an account , <span role="button" class="text-decoration-underline"
+                routerLink="/register">Signup</span></p>
+    </div>
+</div>
+<!--  -->

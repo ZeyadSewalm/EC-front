@@ -1,0 +1,25 @@
+.layer {
+    z-index: 99999;
+    background-color: rgba(0, 0, 0, 0.481);
+}
+.active {
+    width: 20px !important;
+}
+
+.btn-main{
+    color: #fff;
+}
+.form-header {
+  border-bottom: 2px solid #dc3545;
+  padding-bottom: 1rem;
+}
+
+.form-title {
+  font-weight: 600;
+  color: #dc3545; /* your brand green */
+  margin: 0;
+}
+
+.text-muted {
+  font-size: 0.9rem;
+}

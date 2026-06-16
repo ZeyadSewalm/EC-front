@@ -1,0 +1,194 @@
+<section class="py-5" *ngIf="!loading; else notload">
+  <div class="container">
+    <div class="form-header text-center mb-4">
+      <h2 class="form-title">🔔 {{ "dashboard.Notifications" | translate }}</h2>
+      <p class="text-muted">
+        {{ "Check all your notifications below" | translate }}
+      </p>
+    </div>
+
+    <!-- Stats Cards -->
+    <div class="row g-4 mb-4">
+      <div class="col-md-4">
+        <div class="card stat-card shadow-sm border-0 h-100">
+          <div class="card-body text-center">
+            <div
+              class="stat-icon mb-2 bg-primary text-white rounded-circle d-inline-flex justify-content-center align-items-center"
+            >
+              <i class="fa-solid fa-bell"></i>
+            </div>
+            <h6 class="text-muted">
+              {{ "dashboard.Unread Notifications" | translate }}
+            </h6>
+            <h3 class="fw-bold">{{ vendorNotificationsCount.un_read_noti }}</h3>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="card stat-card shadow-sm border-0 h-100">
+          <div class="card-body text-center">
+            <div
+              class="stat-icon mb-2 bg-success text-white rounded-circle d-inline-flex justify-content-center align-items-center"
+            >
+              <i class="fa-solid fa-envelope-open-text"></i>
+            </div>
+            <h6 class="text-muted">
+              {{ "dashboard.Read Notifications" | translate }}
+            </h6>
+            <h3 class="fw-bold">{{ vendorNotificationsCount.read_noti }}</h3>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="card stat-card shadow-sm border-0 h-100">
+          <div class="card-body text-center">
+            <div
+              class="stat-icon mb-2 bg-warning text-white rounded-circle d-inline-flex justify-content-center align-items-center"
+            >
+              <i class="fa-solid fa-bell-concierge"></i>
+            </div>
+            <h6 class="text-muted">
+              {{ "dashboard.All Notifications" | translate }}
+            </h6>
+            <h3 class="fw-bold">{{ vendorNotificationsCount.all_noti }}</h3>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <hr class="my-4" />
+
+    <!-- Notifications Table -->
+    <div
+      class="card shadow-sm border-0 mb-4"
+      *ngIf="vendorUnreadNotifications.length > 0"
+    >
+      <div class="card-body p-0">
+        <table
+          class="table table-hover align-middle mb-0"
+          [dir]="isArabic() ? 'rtl' : 'ltr'"
+        >
+          <thead class="table-light">
+            <tr>
+              <th>{{ "dashboard.Type" | translate }}</th>
+              <th>{{ "dashboard.Message" | translate }}</th>
+              <th>{{ "dashboard.Status" | translate }}</th>
+              <th>{{ "dashboard.Date" | translate }}</th>
+              <th>{{ "dashboard.Action" | translate }}</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let unreadNoti of vendorUnreadNotifications">
+              <td>
+                New order from:
+                <span class="fw-bold">{{ unreadNoti?.order?.full_name }}</span>
+              </td>
+              <td>
+                You got a new order for
+                <span class="fw-bold">{{
+                  unreadNoti?.order_item?.product?.slug
+                }}</span>
+              </td>
+              <td><span class="badge bg-danger">Unread</span></td>
+              <td>{{ unreadNoti.date | date : "mediumDate" }}</td>
+              <td>
+                <button
+                  class="btn btn-sm btn-secondary"
+                  (click)="markAsRead(unreadNoti.id)"
+                >
+                  <i class="fa-solid fa-eye"></i>
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- No Notifications -->
+    <div class="text-center p-4" *ngIf="vendorUnreadNotifications.length === 0">
+      <p class="h4 text-muted">
+        {{ "dashboard.No notifications exist" | translate }}
+        <img
+          src="./assets/notification.png"
+          alt="No notifications"
+          height="50"
+        />
+      </p>
+    </div>
+
+    <!-- Show All Read Notifications Button -->
+    <div class="mb-4 text-center">
+      <button class="btn btn-outline-primary" (click)="viewAllReadNoti(layer)">
+        {{ "dashboard.All Read Notifications" | translate }}
+      </button>
+    </div>
+
+    <!-- Read Notifications Layer -->
+    <div
+      #layer
+      class="layer position-fixed top-0 bottom-0 start-0 end-0 d-flex justify-content-center align-items-start d-none"
+    >
+      <div class="couponData bg-light p-4 mt-5 rounded-3 overflow-auto shadow">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <h2 class="h5">
+            {{ "dashboard.All Read Notifications" | translate }}
+          </h2>
+          <i
+            class="fa fa-close fa-x cursor-pointer"
+            role="button"
+            (click)="closeLayer(layer)"
+          ></i>
+        </div>
+
+        <table
+          class="table table-hover align-middle mb-0"
+          *ngIf="vendorReadNotifications.length > 0"
+        >
+          <thead class="table-dark">
+            <tr>
+              <th>{{ "dashboard.Type" | translate }}</th>
+              <th>{{ "dashboard.Message" | translate }}</th>
+              <th>{{ "dashboard.Status" | translate }}</th>
+              <th>{{ "dashboard.Date" | translate }}</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let readNoti of vendorReadNotifications">
+              <td>
+                New order:
+                <span class="fw-bold">{{ readNoti.order_item.oid }}</span>
+              </td>
+              <td>
+                You got a new order for
+                <span class="fw-bold">{{
+                  readNoti.order_item.product.slug
+                }}</span>
+              </td>
+              <td><span class="badge bg-success">Read</span></td>
+              <td>{{ readNoti.date | date : "mediumDate" }}</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div
+          class="text-center p-3"
+          *ngIf="vendorReadNotifications.length === 0"
+        >
+          <p class="h4 text-muted">
+            {{ "dashboard.No notifications exist" | translate }}
+            <img src="./assets/notification.png" alt="" height="50" />
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<ng-template #notload>
+  <div class="d-flex justify-content-center align-items-center vh-100">
+    <app-loading></app-loading>
+  </div>
+</ng-template>

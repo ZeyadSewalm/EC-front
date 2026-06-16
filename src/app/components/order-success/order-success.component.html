@@ -1,0 +1,25 @@
+<section class="my-5 py-3">
+   <div class="container">
+    <div
+      class="payCash d-flex flex-column justify-content-center align-items-center p-3 gap-4 rounded-3 shadow"
+      *ngIf="PaidMsgSuccess"
+    >
+      <p class="checkBack text-white">
+        <i class="fa-solid fa-hand-holding-dollar fs-2"></i>
+      </p>
+      <h3>Order Confirmed!</h3>
+      <p>Your order has been placed. Please pay in cash when delivered.</p>
+      <div>
+        <button class="btn btn-primary" [routerLink]="['/home']">Go Home</button>
+      </div>
+    </div>
+    <div class="payFail d-flex flex-column justify-content-center align-items-center p-3 gap-4 rounded-3 shadow" *ngIf="PaidMsgFail">
+        <p class="failBack text-white"><i class="fa-solid fa-xmark fs-2"></i></p>
+        <h3>Error , Not Paid!</h3>
+        <p>something wrong was happened</p>
+        <div>
+            <button class="btn btn-danger" [routerLink]="['/home']" >Go Home</button>
+        </div>
+    </div>
+   </div>
+</section>

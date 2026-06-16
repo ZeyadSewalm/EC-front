@@ -1,0 +1,51 @@
+
+
+
+.product-form-container {
+  max-width: 1000px;
+  margin: auto;
+  padding: 20px;
+
+  .form-section {
+    margin-top: 25px;
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background: #fafafa;
+  }
+
+  h4 {
+    font-weight: 600;
+    margin-bottom: 15px;
+  }
+
+  .btn {
+    min-width: 120px;
+  }
+}
+
+.form-select {
+  border-radius: 0.5rem;
+  padding: 0.5rem 1rem;
+  border: 1px solid #ccc;
+  transition: border-color 0.2s, box-shadow 0.2s;
+
+  &:focus {
+    border-color: #228200;
+    box-shadow: 0 0 0 0.2rem rgba(34, 130, 0, 0.25);
+  }
+}
+.form-header {
+  border-bottom: 2px solid #dc3545;
+  padding-bottom: 1rem;
+}
+
+.form-title {
+  font-weight: 600;
+  color: #dc3545; /* your brand green */
+  margin: 0;
+}
+
+.text-muted {
+  font-size: 0.9rem;
+}

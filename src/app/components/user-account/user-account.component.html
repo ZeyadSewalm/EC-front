@@ -1,0 +1,8 @@
+<section class="p-5 shadow rounded-3" [dir]="isArabic() ? 'rtl' : 'ltr'" [lang]="isArabic()? 'ar':'en'">
+    <h1 class="text-capitalize">{{'customerDashboard.Hi' | translate}} {{userName}}</h1> 
+    <p>
+        {{'customerDashboard.Here your accout dashboard , You can easile check & view your' | translate}} <span routerLink="/account/orders" class="text-prim text-decoration-underline" role="button">{{'customerDashboard.Orders' | translate}}</span>
+        ,{{'customerDashboard.view your' | translate}} <span routerLink="/account/wishlist" class="text-prim text-decoration-underline" role="button">{{'customerDashboard.Wishlist' | translate}}</span> ,{{'customerDashboard.manage your' | translate}}  
+        <span routerLink="/account/settings" class="text-prim text-decoration-underline" role="button">{{'customerDashboard.Profile Account' | translate}}</span>
+    </p>
+</section>

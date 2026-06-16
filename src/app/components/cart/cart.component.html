@@ -1,0 +1,108 @@
+<section class="my-5" *ngIf="render &&!cartloading else notload" [dir]="isArabic() ? 'rtl' : 'ltr'">
+    <div class="container">
+        <div class="row g-5">
+            <div class="col-md-8">
+                <div class="userProducts pe-3">
+                    <div class="row p-2" *ngFor="let item of userCartProducts">
+                        <div class="col-md-2">
+                            <img [src]="item.product.image" alt="" class="w-100">
+                        </div>
+                        <div class="col-md-10 d-flex justify-content-between">
+                            <div class="itemData d-flex flex-column gap-2">
+                                <h3 class="title-cell">{{item.product.title}}</h3>
+                                <p [lang]="isArabic()? 'ar':'en'"><span class="text-secondary" >{{'cart.Size' | translate}} : </span>{{item.size}}</p>
+                                <p [lang]="isArabic()? 'ar':'en'"><span class="text-secondary" >{{'cart.Color' | translate}} : </span>{{item.color}}</p>
+                                <p [lang]="isArabic()? 'ar':'en'"><span class="text-secondary" >{{'cart.Price' | translate}} : </span>{{item.price}} {{'currency.' + item.currency | translate}}</p>
+                                <p [lang]="isArabic()? 'ar':'en'"><span class="text-secondary" >{{'cart.brand' | translate}} : </span>{{item.product.brand}}</p>
+                                <p [lang]="isArabic()? 'ar':'en'"><span class="text-secondary" >{{'cart.Category' | translate}} : </span>{{item.product.category}}</p>
+                                <button class="btn btn-danger" (click)="deleteItem(item.id)">
+                                    <i class="fa-solid fa-trash mx-2"></i>
+                                    {{'cart.Remove' | translate}}
+                                </button>
+                            </div>
+                            <div>
+                                <div class="parent">
+                                    <button class="btn-main px-3 py-1" (click)="increaseCount($event)"><i class="fa-solid fa-plus"></i></button>
+                                    <span #qty class="m-auto mx-2">{{item.qty}}</span>
+                                    <button class="btn-main px-3 py-1" (click)="minusCount($event)"><i class="fa-solid fa-minus"></i></button>
+                                    <div>
+                                        <button #updateBtn class="btn-main px-3 py-2 w-100 mt-2" (click)="updateCart(item.product.id , item.price , item.shipping_amount , item.size , item.color)">{{'cart.Update' | translate}}<i class="fa-solid fa-arrows-rotate mx-2 "></i></button>
+                                    </div>
+                                    <p class="text-center mt-3 fw-bold h5" [lang]="isArabic()? 'ar':'en'">{{item.price | productCost : qty.innerText}} {{'currency.' + item.currency | translate}}</p>
+                                </div>
+                            </div>
+                        </div>
+                        <hr class="my-3">
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4" [lang]="isArabic()? 'ar':'en'" *ngIf="noItems == false">
+                <h5>{{'cart.Cart Summary' | translate}}</h5>
+                <p class="d-flex flex-wrap justify-content-between align-items-center my-3"><span class="text-secondary" >{{'cart.Subtotal' | translate}}</span><span>{{userCartTotalSummary.sub_total}} {{'currency.' + userCartProducts[0].currency | translate}}</span></p>
+                <p class="d-flex flex-wrap justify-content-between align-items-center my-3"><span class="text-secondary" >{{'cart.Shipping' | translate}}</span><span>{{userCartTotalSummary.shipping}} {{'currency.' + userCartProducts[0].currency | translate}}</span></p>
+                <p class="d-flex flex-wrap justify-content-between align-items-center my-3"><span class="text-secondary" >{{'cart.Tax' | translate}}</span><span>{{userCartTotalSummary.tax}} {{'currency.' + userCartProducts[0].currency | translate}}</span></p>
+                <p class="d-flex flex-wrap justify-content-between align-items-center my-3"><span class="text-secondary" >{{'cart.Service Fee' | translate}}</span><span>{{userCartTotalSummary.service_fee}} {{'currency.' + userCartProducts[0].currency | translate}}</span></p>
+                <hr>
+                <p class="d-flex flex-wrap justify-content-between align-items-center fw-bold my-3"><span >{{'cart.Total' | translate}}</span><span>{{ userCartTotalSummary.total }} {{'currency.' + userCartProducts[0].currency | translate}}</span></p>
+                <button class="btn-main w-100" (click)="checkOut()">{{'cart.Got To Checkout' | translate}}</button>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-8">
+                <div class="userData mt-5" *ngIf="noItems == false">
+                    <form [formGroup]="PersonalInfo">
+                        <h4 class="mb-4">{{'cart.Personal Information' | translate}}</h4>
+                        <!-- <div>
+                            <label for="name"><i class="fa-solid fa-user mx-2"></i> {{'cart.Full Name' | translate}}</label>
+                            <input #input class="form-control w-100" type="text" id="name" formControlName="full_name">
+                        </div> -->
+                        <div class="d-flex justify-content-between gap-3">
+                            <div class="w-50">
+                                <label for="name"><i class="fa-solid fa-user mx-2"></i> {{'cart.Full Name' | translate}}</label>
+                            <input #input class="form-control w-100" type="text" id="name" formControlName="full_name">
+                            </div>
+
+                            <div class="w-50">
+                                <label for="phone"><i class="fa-solid fa-phone mx-2"></i>{{'cart.Mobile' | translate}}</label>
+                                <input #input class="form-control w-100" type="tel" id="phone" formControlName="phone">
+                            </div>
+                        </div>
+                    </form>
+                    <form [formGroup]="shippingAddress">
+                        <h4 class="my-4">{{'cart.Shipping Address' | translate }}</h4>
+                        <div class="d-flex justify-content-between gap-3">
+                            <div class="w-50">
+                                <label for="address"> {{'cart.Address' | translate}}</label>
+                                <input  #input class="form-control w-100" type="text" id="address" formControlName="Address">
+                            </div>
+                            <div class="w-50">
+                                <label for="City">{{'cart.City' | translate}}</label>
+                                <input  #input class="form-control w-100" type="text" id="City" formControlName="City">
+                            </div>
+                        </div>
+                        <div class="d-flex justify-content-between gap-3">
+                            <div class="w-50">
+                                <label for="State">{{'cart.governorate' | translate}}</label>
+                                <input  #input class="form-control w-100" type="text" id="State" formControlName="State">
+                            </div>
+                            <!-- <div class="w-50">
+                                <label for="Country">{{'cart.Country' | translate}}</label>
+                                <input  #input class="form-control w-100" type="text" id="Country" formControlName="Country">
+                            </div> -->
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="py-3 text-white rounded-2 mx-auto" *ngIf="noItems" [lang]="isArabic()? 'ar':'en'">
+        <p class="text-center h1 text-danger">{{'cart.Your Cart is empty' | translate}} <img src="./assets/cart.png" alt="" height="150"></p>
+    </div>
+</section>
+
+<ng-template #notload>
+    <div class="d-flex justify-content-center align-items-center vh-100">
+        <app-loading></app-loading>
+    </div>
+</ng-template>

@@ -1,0 +1,85 @@
+<section *ngIf="!orderloading else notload">
+    <p-table #dt2 [value]="products" styleClass="p-datatable-striped" [paginator]="true" [loading]="loading" [rows]="25"
+        [globalFilterFields]="['oid','full_name']" [rowsPerPageOptions]="[25, 50, 100]" [first]="first"
+        [showCurrentPageReport]="true" [rowHover]="true" [filterDelay]="0"
+        currentPageReportTemplate="{{
+                'dashboard.SHOWING_ENTRIES' | translate:{
+                    first: dt2.first,
+                    last: (dt2.rows ? (dt2.first! + (dt2.rows - 1)) : 0),
+                    totalRecords: dt2.totalRecords
+                }
+            }}"
+            >
+        <ng-template pTemplate="caption">
+            <div class="d-flex justify-content-between" [dir]="isArabic()?'rtl':'ltr'">
+                <div class="d-flex gap-2">
+                    <button type="button" pButton pRipple icon="pi pi-file" (click)="exportCSV()" class="mr-2"
+                        pTooltip="CSV" tooltipPosition="bottom"></button>
+                    <button type="button" pButton pRipple icon="pi pi-file-excel" (click)="exportExcel()"
+                        class="p-button-success mr-2" pTooltip="XLS" tooltipPosition="bottom"></button>
+
+                    <button type="button" pButton pRipple icon="pi pi-file-pdf" (click)="exportPDF()"
+                        class="p-button-warning mr-2" pTooltip="PDF" tooltipPosition="bottom" *ngIf="!isArabic()"></button>
+                </div>
+                <span class="p-input-icon-left">
+                    <i class="pi pi-search"></i>
+                    <input pInputText type="text" class="p-inputtext p-component p-element" [(ngModel)]="filter"
+                        (input)="dt2.filterGlobal(filter, 'contains')" [placeholder]="'dashboard.Search'|translate" [lang]="isArabic()? 'ar':'en'" />
+                </span>
+            </div>
+        </ng-template>
+        <ng-template pTemplate="header">
+            <tr>
+                <th pSortableColumn="oid" style="min-width:7rem">
+                    {{'dashboard.ID'|translate}} <p-sortIcon field="oid"></p-sortIcon>
+                </th>
+                <th pSortableColumn="full_name">
+                    {{"dashboard.OrderName"|translate}} <p-sortIcon field="full_name"></p-sortIcon>
+                </th>
+                <th pSortableColumn="vendor_total" style="max-width:9rem">
+                    <div class="d-flex justify-content-between align-items-center">
+                        {{"dashboard.Total Price"|translate}}
+                        <p-sortIcon field="vendor_total"></p-sortIcon>
+                        <p-columnFilter type="numeric" field="vendor_total" display="menu" currency="EGP">
+                        </p-columnFilter>
+                    </div>
+                </th>
+                <th>
+                    {{"dashboard.Status"|translate}}
+                </th>
+                <th>
+                    {{"dashboard.Payment"|translate}}
+                </th>
+                <th pSortableColumn="date">
+                    {{'dashboard.Date'|translate}} <p-sortIcon field="date"></p-sortIcon>
+                    <p-columnFilter type="date" field="date" display="menu"></p-columnFilter>
+
+                </th>
+
+                <th>{{'dashboard.Action'|translate}}</th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-order>
+            <tr>
+                <th>#{{order.oid}}</th>
+                <th>{{order.full_name}}</th>
+                <td>{{ order.vendor_total }}</td>
+                <td><p-tag [value]="order.order_status" [severity]="getSeverity(order.order_status)!"></p-tag></td>
+                <td><p-tag [value]="order.payment_status" [severity]="getSeverity(order.payment_status)!"></p-tag></td>
+                <td>{{ order.date|date:'EEEE, MMMM d, y, h:mm:ss a' }}</td>
+
+                <td>
+                    <div class="d-flex gap-1">
+                        <button class="btn btn-primary" [routerLink]="['/new-vendor/orderDetails/',order.oid]"><i
+                                class="fa-solid fa-eye"></i></button>
+                    </div>
+                </td>
+            </tr>
+        </ng-template>
+    </p-table>
+</section>
+<ng-template #notload>
+    <div class="d-flex justify-content-center align-items-center vh-100">
+        <app-loading></app-loading>
+    </div>
+</ng-template>

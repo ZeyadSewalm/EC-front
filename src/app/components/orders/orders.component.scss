@@ -1,0 +1,37 @@
+.orders , .pending , .fulfilled {
+    width: 32%;
+    padding: 20px 10px;
+}
+.orders {
+    background-color: rgb(132, 226, 132);
+    i {
+        color: rgb(35, 143, 35);
+    }
+}
+.pending {
+    background-color: rgb(210, 146, 217);
+    i {
+        color: rgb(140, 45, 150);
+    }
+}
+.fulfilled {
+    background-color: rgb(91, 176, 219);
+    i {
+        color: rgb(21, 105, 147);
+    }
+}
+table {
+    th {
+        border-bottom: 2px solid gray;
+    }
+    th , td {
+        padding: 10px;
+    }
+}
+.view {
+    color: rgb(34, 150, 221);
+    transition: 0.2s;
+    &:hover {
+        color: rgb(146, 64, 201);
+    }
+}

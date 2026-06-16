@@ -1,0 +1,44 @@
+.testimonial-section{
+  background-color: antiquewhite;
+  padding:3.5rem 0;
+}
+.testimonial-text{
+  width: 50%;
+  @media screen and (max-width: 768px) {
+    width: 80%;
+  }
+}
+
+.testimonial-img{
+  background-color: rgb(238, 243, 243);
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+}
+
+.testimonial-name{
+  font-weight: 600;
+}
+
+.testimonial-job{
+ font-size: 14px;
+ color: rgb(151, 151, 151);
+}
+
+
+swiper-container::part(button-next),
+swiper-container::part(button-prev) {
+  height:20px;
+  color: rgb(82, 79, 79);
+  
+}
+
+@media screen and (max-width: 768px) {
+  swiper-container::part(button-prev){
+    left: 0;
+  }
+  
+  swiper-container::part(button-next){
+    right: 0;
+  }
+}

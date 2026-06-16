@@ -1,0 +1,542 @@
+<nav class="bg-white shadow" [dir]="isArabic() ? 'rtl' : 'ltr'">
+  <div class="container">
+    <div
+      class="f-header d-flex flex-wrap gap-3 justify-content-between align-items-center"
+    >
+      <div class="d-flex gap-2 align-items-center">
+        <i class="fa-solid fa-truck-fast"></i>
+        <span [lang]="isArabic() ? 'ar' : 'en'">{{
+          "home.Free Express Shipping" | translate
+        }}</span>
+      </div>
+      <div class="d-flex flex-wrap gap-2 align-items-center">
+        <div class="p-0 d-flex gap-2 social-icons">
+          <i class="fa-brands fa-facebook-f"></i>
+          <i class="fa-brands fa-twitter"></i>
+          <i class="fa-brands fa-instagram"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="navBarLg">
+    <div class="secNavLarge navbar nav--content p-0 my-2">
+      <div class="container d-flex align-items-center justify-content-between">
+        <a routerLink="/home">
+          <img src="./assets/logo.svg" width="100" alt="logo" />
+        </a>
+        <div class="w-50 search-input mx-auto">
+          <input
+            type="text"
+            class="form-control w-100"
+            [placeholder]="'home.Search' | translate"
+            [(ngModel)]="search"
+            [dir]="isArabic() ? 'rtl' : 'ltr'"
+            (ngModelChange)="getAllProduct()"
+            [lang]="isArabic() ? 'ar' : 'en'"
+          />
+          <button
+            class="btn icon-search"
+            [ngStyle]="{
+              left: isArabic() ? '0' : 'auto',
+              right: isArabic() ? 'auto' : '0'
+            }"
+          >
+            <i class="fa-solid fa-magnifying-glass"></i>
+          </button>
+          <div class="search-product shadow" *ngIf="search.length > 2">
+            <ng-container
+              *ngIf="searchProduct.length > 0 && !searchLoading; else noproduct"
+            >
+              <div *ngFor="let item of searchProduct">
+                <p class="product-title" (click)="routing(item)">
+                  {{ item.title }}
+                </p>
+              </div>
+            </ng-container>
+            <ng-container *ngIf="searchLoading">
+              <div class="loading">
+                <app-loading></app-loading>
+              </div>
+            </ng-container>
+
+            <ng-template #noproduct>
+              <p class="text-center" *ngIf="!searchLoading">
+                {{ "home.no product found" | translate }}
+              </p>
+            </ng-template>
+          </div>
+        </div>
+        <ul
+          class="mb-lg-0 gap-3 py-2 d-flex justify-content-between align-items-center"
+        >
+          <li class="nav-item dropdown">
+            <div class="nav-link p-0 position-relative">
+              <i class="fa-regular fa-circle-user fs-2"></i>
+              <ul
+                *ngIf="userLogedIn"
+                class="dropdown-menu"
+                [lang]="isArabic() ? 'ar' : 'en'"
+              >
+                <li>
+                  <a
+                    class="dropdown-item"
+                    role="button"
+                    (click)="logOut()"
+                    [ngStyle]="{ 'text-align': isArabic() ? 'right' : 'left' }"
+                    >{{ "account.logout" | translate }}</a
+                  >
+                </li>
+                <li>
+                  <a
+                    class="dropdown-item"
+                    routerLink="account"
+                    [ngStyle]="{ 'text-align': isArabic() ? 'right' : 'left' }"
+                    >{{ "account.account" | translate }}</a
+                  >
+                </li>
+              </ul>
+              <ul
+                *ngIf="!userLogedIn"
+                class="dropdown-menu"
+                [lang]="isArabic() ? 'ar' : 'en'"
+              >
+                <li>
+                  <a
+                    class="dropdown-item"
+                    routerLink="register"
+                    [ngStyle]="{ 'text-align': isArabic() ? 'right' : 'left' }"
+                    >{{ "account.signup" | translate }}</a
+                  >
+                </li>
+                <li>
+                  <a
+                    class="dropdown-item"
+                    routerLink="login"
+                    [ngStyle]="{ 'text-align': isArabic() ? 'right' : 'left' }"
+                    >{{ "account.Login" | translate }}</a
+                  >
+                </li>
+              </ul>
+            </div>
+          </li>
+          <li class="nav-item d-flex align-items-center">
+            <a
+              class="nav-link position-relative d-flex align-items-center justify-content-center"
+              aria-current="page"
+              routerLink="wishlist"
+            >
+              <i class="fa-regular fa-heart fs-2"></i>
+              <span
+                class="bg-num position-absolute translate-middle-y text-white cartNumber"
+                >{{ itemsWishlistCount }}</span
+              >
+            </a>
+          </li>
+          <li class="nav-item">
+            <a
+              class="nav-link position-relative d-flex align-items-center justify-content-center"
+              routerLink="cart"
+            >
+              <i class="fa-solid fa-cart-shopping fs-2"></i>
+              <span
+                class="bg-num position-absolute translate-middle-y text-white cartNumber"
+                >{{ itemsCartCount }}</span
+              >
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <!--  -->
+    <nav class="thNavLarge navbar bg-body-tertiary">
+      <div class="container align-items-center justify-content-between">
+        <ul class="d-flex home gap-3 align-items-center">
+          <li
+            class="nav-item category d-flex align-items-center gap-2 cursor-pointer cat-drop position-relative"
+          >
+            <i class="fa-solid fa-bars"></i>
+            <a
+              class="nav-link text-white"
+              aria-current="page"
+              [lang]="isArabic() ? 'ar' : 'en'"
+              >{{
+                "home.All
+                          Category" | translate
+              }}</a
+            >
+            <div class="dropdown-category shadow">
+              <ul [lang]="isArabic() ? 'ar' : 'en'">
+                <li
+                  class="single-category"
+                  *ngFor="let item of category"
+                  [routerLink]="['/products']"
+                  [queryParams]="{ category: item.title, id: item.id }"
+                >
+                  {{ item.title }}
+                </li>
+              </ul>
+            </div>
+          </li>
+          <li
+            class="nav-item category d-flex align-items-center gap-2 cursor-pointer cat-drop position-relative"
+            *ngIf="vendorId > 0"
+          >
+            <i class="fa-solid fa-bars"></i>
+            <a
+              class="nav-link text-white"
+              aria-current="page"
+              [lang]="isArabic() ? 'ar' : 'en'"
+              >{{ "home.Vendor" | translate }}</a
+            >
+            <div class="dropdown-category shadow">
+              <ul [lang]="isArabic() ? 'ar' : 'en'">
+                <li class="single-category" routerLink="/new-vendor/dashboard">
+                  {{ "home.Dashbard" | translate }}
+                </li>
+                <li class="single-category" routerLink="/new-vendor/add-product">
+                  {{
+                    "home.Add
+                                  Product" | translate
+                  }}
+                </li>
+                <li class="single-category" routerLink="/new-vendor/orders">
+                  {{ "home.Orders" | translate }}
+                </li>
+                <li
+                  class="single-category"
+                  routerLink="/new-vendor/notifications"
+                >
+                  {{ "home.Notification" | translate }}
+                </li>
+                <li
+                  class="single-category"
+                  routerLink="/new-vendor/coupons"
+                >
+                  {{
+                    "home.Coupons &
+                                  Discount" | translate
+                  }}
+                </li>
+              </ul>
+            </div>
+          </li>
+          <li class="nav-item" [lang]="isArabic() ? 'ar' : 'en'">
+            <a
+              class="nav-link"
+              aria-current="page"
+              routerLink="home"
+              routerLinkActive="active-link"
+              >{{ "home.Home" | translate }}</a
+            >
+          </li>
+          <li class="nav-item" [lang]="isArabic() ? 'ar' : 'en'">
+            <a
+              class="nav-link"
+              aria-current="page"
+              routerLink="products"
+              routerLinkActive="active-link"
+              (click)="reloadComponent()"
+              >{{ "home.Products" | translate }}</a
+            >
+          </li>
+          <li class="nav-item">
+            <a
+              class="nav-link"
+              aria-current="page"
+              >About Us</a
+            >
+          </li>
+
+          <li class="nav-item">
+            <a
+              class="nav-link"
+              aria-current="page"
+              >Contact Us</a
+            >
+          </li>
+
+        </ul>
+      </div>
+    </nav>
+  </div>
+  <nav
+    class="navbar navbar-expand-lg navBarSm"
+    [dir]="isArabic() ? 'rtl' : 'ltr'"
+  >
+    <div class="container">
+      <img src="./assets/logo.svg" width="100" alt="logo" />
+      <button
+        class="navbar-toggler border-0 shadow-none"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="my-2">
+            <div class="w-100 search-input mx-auto">
+              <input
+                type="text"
+                class="form-control w-100"
+                [placeholder]="'home.Search' | translate"
+                [(ngModel)]="search"
+                [dir]="isArabic() ? 'rtl' : 'ltr'"
+                (ngModelChange)="getAllProduct()"
+              />
+              <button
+                class="btn icon-search"
+                [ngStyle]="{
+                  left: isArabic() ? '0' : 'auto',
+                  right: isArabic() ? 'auto' : '0'
+                }"
+              >
+                <i class="fa-solid fa-magnifying-glass"></i>
+              </button>
+              <div class="search-product shadow" *ngIf="search.length > 2">
+                <ng-container
+                  *ngIf="
+                    searchProduct.length > 0 && !searchLoading;
+                    else noproduct
+                  "
+                >
+                  <div *ngFor="let item of searchProduct">
+                    <p
+                      class="product-title"
+                      (click)="routing(item)"
+                      [lang]="isArabic() ? 'ar' : 'en'"
+                    >
+                      {{ item.title }}
+                    </p>
+                  </div>
+                </ng-container>
+                <ng-container *ngIf="searchLoading">
+                  <div class="loading">
+                    <app-loading></app-loading>
+                  </div>
+                </ng-container>
+
+                <ng-template #noproduct>
+                  <p
+                    class="text-center"
+                    *ngIf="!searchLoading"
+                    [lang]="isArabic() ? 'ar' : 'en'"
+                  >
+                    {{ "home.no product found" | translate }}
+                  </p>
+                </ng-template>
+              </div>
+            </div>
+          </li>
+          <li>
+            <ul
+              class="my-2 gap-3 py-2 d-flex justify-content-start align-items-center"
+            >
+              <li class="nav-item dropdown">
+                <div class="nav-link p-0 position-relative">
+                  <i class="fa-regular fa-circle-user fs-2"></i>
+                  <ul
+                    *ngIf="userLogedIn"
+                    class="dropdown-menu"
+                    [lang]="isArabic() ? 'ar' : 'en'"
+                  >
+                    <li>
+                      <a
+                        class="dropdown-item"
+                        role="button"
+                        (click)="logOut()"
+                        [ngStyle]="{
+                          'text-align': isArabic() ? 'right' : 'left'
+                        }"
+                        >{{ "account.logout" | translate }}</a
+                      >
+                    </li>
+                    <li>
+                      <a
+                        class="dropdown-item"
+                        routerLink="account"
+                        [ngStyle]="{
+                          'text-align': isArabic() ? 'right' : 'left'
+                        }"
+                        >{{ "account.account" | translate }}</a
+                      >
+                    </li>
+                  </ul>
+                  <ul
+                    *ngIf="!userLogedIn"
+                    class="dropdown-menu"
+                    [lang]="isArabic() ? 'ar' : 'en'"
+                  >
+                    <li>
+                      <a
+                        class="dropdown-item"
+                        routerLink="register"
+                        [ngStyle]="{
+                          'text-align': isArabic() ? 'right' : 'left'
+                        }"
+                        >{{ "account.signup" | translate }}</a
+                      >
+                    </li>
+                    <li>
+                      <a
+                        class="dropdown-item"
+                        routerLink="login"
+                        [ngStyle]="{
+                          'text-align': isArabic() ? 'right' : 'left'
+                        }"
+                        >{{ "account.Login" | translate }}</a
+                      >
+                    </li>
+                  </ul>
+                </div>
+              </li>
+              <li class="nav-item d-flex align-items-center">
+                <a
+                  class="nav-link position-relative d-flex align-items-center justify-content-center"
+                  aria-current="page"
+                  routerLink="wishlist"
+                >
+                  <i class="fa-regular fa-heart fs-2"></i>
+                  <span
+                    class="bg-num position-absolute translate-middle-y text-white cartNumber"
+                    >{{ itemsWishlistCount }}</span
+                  >
+                </a>
+              </li>
+              <li class="nav-item">
+                <a
+                  class="nav-link position-relative d-flex align-items-center justify-content-center"
+                  routerLink="cart"
+                >
+                  <i class="fa-solid fa-cart-shopping fs-2"></i>
+                  <span
+                    class="bg-num position-absolute translate-middle-y text-white cartNumber"
+                    >{{ itemsCartCount }}</span
+                  >
+                </a>
+              </li>
+            </ul>
+          </li>
+          <li>
+            <ul
+              class="d-flex hoverAction flex-column justify-content-center home gap-3 align-items-start"
+            >
+              <li
+                class="nav-item category d-flex align-items-center gap-2 cursor-pointer cat-drop position-relative"
+              >
+                <i class="fa-solid fa-bars"></i>
+                <a
+                  class="nav-link text-white"
+                  aria-current="page"
+                  [lang]="isArabic() ? 'ar' : 'en'"
+                  >{{ "home.All Category" | translate }}</a
+                >
+                <div class="dropdown-category shadow">
+                  <ul>
+                    <li
+                      class="single-category"
+                      *ngFor="let item of category"
+                      [routerLink]="['/products']"
+                      [queryParams]="{ category: item.title, id: item.id }"
+                      [lang]="isArabic() ? 'ar' : 'en'"
+                    >
+                      {{ item.title }}
+                    </li>
+                  </ul>
+                </div>
+              </li>
+              <li
+                class="nav-item category d-flex align-items-center gap-2 cursor-pointer cat-drop position-relative"
+                *ngIf="vendorId > 0"
+              >
+                <i class="fa-solid fa-bars"></i>
+                <a
+                  class="nav-link text-white"
+                  aria-current="page"
+                  [lang]="isArabic() ? 'ar' : 'en'"
+                  >{{ "home.Vendor" | translate }}</a
+                >
+                <div
+                  class="dropdown-category shadow"
+                  [lang]="isArabic() ? 'ar' : 'en'"
+                >
+                  <ul>
+                    <li class="single-category" routerLink="/dashboard">
+                      {{ "home.Dashbard" | translate }}
+                    </li>
+                    <li
+                      class="single-category"
+                      routerLink="/dashboard/addproduct"
+                    >
+                      {{
+                        "home.Add
+                                          Product" | translate
+                      }}
+                    </li>
+                    <li class="single-category" routerLink="/dashboard/orders">
+                      {{ "home.Orders" | translate }}
+                    </li>
+                    <li
+                      class="single-category"
+                      routerLink="/dashboard/vendorNotifications"
+                    >
+                      {{ "home.Notification" | translate }}
+                    </li>
+                    <li
+                      class="single-category"
+                      routerLink="/dashboard/vendorCoupons"
+                    >
+                      {{
+                        "home.Coupons &
+                                          Discount" | translate
+                      }}
+                    </li>
+                  </ul>
+                </div>
+              </li>
+              <li class="nav-item p-0">
+                <a
+                  class="nav-link p-0"
+                  aria-current="page"
+                  routerLink="home"
+                  routerLinkActive="active-link"
+                  [lang]="isArabic() ? 'ar' : 'en'"
+                  >{{ "home.Home" | translate }}</a
+                >
+              </li>
+              <li class="nav-item p-0">
+                <a
+                  class="nav-link p-0"
+                  aria-current="page"
+                  routerLink="products"
+                  routerLinkActive="active-link"
+                  (click)="reloadComponent()"
+                  [lang]="isArabic() ? 'ar' : 'en'"
+                  >{{ "home.Products" | translate }}</a
+                >
+              </li>
+              <li class="nav-item p-0">
+                <a
+                  class="nav-link p-0"
+                  aria-current="page"
+                  >About Us</a
+                >
+              </li>
+              <li class="nav-item p-0">
+                <a
+                  class="nav-link p-0"
+                  aria-current="page"
+                  >Contact Us</a
+                >
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+</nav>

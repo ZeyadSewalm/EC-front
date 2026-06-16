@@ -1,0 +1,163 @@
+<div class="container my-5" *ngIf="productDetails.category &&!loading else notloaded" [dir]="isArabic() ? 'rtl' : 'ltr'">
+    <div class="row g-5">
+
+        <div class="col-md-6 col-lg-4 col-sm-8 mx-auto">
+            <div class="showImages d-flex flex-column gap-3 p-2 rounded-3 shadow bg-main-light">
+                <div class="productMainImg d-flex justify-content-center align-items-center">
+                    <img [src]="productDetails.image" [alt]="productDetails.slug" class="mainImg w-75" #img>
+                </div>
+                <div class="productGallery rounded-2 overflow-auto d-flex flex-wrap gap-3 justify-content-center align-items-center mt-5">
+                    <div *ngFor="let img of productDetails.gallery" class="itemContainer" (click)="active($event)">
+                        <img [src]="img.image" [alt]="productDetails.title" class="w-100">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 col-lg-8 details">
+            <span>{{productDetails.category}}</span>
+            <h2>{{productDetails.title}}</h2>
+            <div class="d-flex gap-2 align-items-center">
+                <i [class.rating-color]="rate <=productDetails.rating" *ngFor="let rate of [1,2,3,4,5]"
+                    class="fa-solid fa-star"></i>
+                <p>{{ratingCount}}</p>
+                <p class="ps-1" [lang]="isArabic()? 'ar':'en'">({{productDetails.rating_count}} {{'productDetails.reviews' | translate}})</p>
+            </div>
+            <p class="product-price" [lang]="isArabic()? 'ar':'en'">{{productDetails.price + ' ' }} {{'currency.EGP' | translate}}</p>
+            <p class="product-details">{{productDetails.description}}</p>
+            <div class="d-flex  gap-4" [lang]="isArabic()? 'ar':'en'">
+                <select #color class="form-select form-select-lg w-auto">
+                    <option [value]="item.name" *ngFor="let item of productDetails.color">{{'cart.Color' | translate}}: {{item.name}}
+                    </option>
+                </select>
+                <select #size class="form-select form-select-lg w-auto">
+                    <option [value]="item.name" *ngFor="let item of productDetails.size">{{'cart.Size' | translate}}: {{item.name}}</option>
+                </select>
+            </div>
+            <div class="d-flex gap-3 align-items-center mt-4">
+                <button class="btn main-btn"
+                    (click)="addToCart(productDetails.id , productDetails.price , productDetails.shipping_amount , size.value , color.value , layer)"
+                    [lang]="isArabic()? 'ar':'en'">
+                    {{'cart.ADD To Cart' | translate}}
+                </button>
+                <div *ngIf="!wishlistData.includes($any(productDetails.id))"
+                    class="heart-details shadow d-flex align-items-center justify-content-center"
+                    (click)="addAndRemoveWhishlist(productDetails.id , layer)">
+                    <i class="fa-regular fa-heart fs-5 cursor-pointer"></i>
+                </div>
+                <div *ngIf="wishlistData.includes($any(productDetails.id))"
+                    class="heart-details shadow d-flex align-items-center justify-content-center fav"
+                    (click)="addAndRemoveWhishlist(productDetails.id , layer)">
+                    <i class="fa-solid fa-heart fs-5 cursor-pointer"></i>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- review cotainer -->
+
+    <div class="review-container gap-4 justify-content-md-start justify-content-center align-items-center">
+        <div class="chart" [lang]="isArabic()? 'ar':'en'">
+            <div class="rate-box">
+                <span class="value">5</span>
+                <div class="progress-bar">
+                    <span class="progress me-auto"
+                        [style.width]="reviewsCount.five_star|reviewPrecentage:countreviews"></span>
+                </div>
+                <span class="count">({{reviewsCount.five_star}} {{'productDetails.reviews' | translate}})</span>
+            </div>
+            <div class="rate-box">
+                <span class="value">4</span>
+                <div class="progress-bar"><span class="progress me-auto"
+                        [style.width]="reviewsCount.four_star|reviewPrecentage:countreviews"></span></div>
+                <span class="count">({{reviewsCount.four_star}} {{'productDetails.reviews' | translate}})</span>
+            </div>
+            <div class="rate-box">
+                <span class="value">3</span>
+                <div class="progress-bar"><span class="progress me-auto"
+                        [style.width]="reviewsCount.three_star|reviewPrecentage:countreviews"></span></div>
+                <span class="count">({{reviewsCount.three_star}} {{'productDetails.reviews' | translate}})</span>
+            </div>
+            <div class="rate-box">
+                <span class="value">2</span>
+                <div class="progress-bar"><span class="progress me-auto"
+                        [style.width]="reviewsCount.two_star|reviewPrecentage:countreviews"></span></div>
+                <span class="count">({{reviewsCount.two_star}} {{'productDetails.reviews' | translate}})</span>
+            </div>
+            <div class="rate-box">
+                <span class="value">1</span>
+                <div class="progress-bar"><span class="progress me-auto"
+                        [style.width]="reviewsCount.one_star|reviewPrecentage:countreviews"></span></div>
+                <span class="count">({{reviewsCount.one_star}} {{'productDetails.reviews' | translate}})</span>
+            </div>
+        </div>
+        <div class="global">
+            <span class="global-value"></span>
+            <div class="rating-icons">
+                <span class="one">
+                    <i [class.rating-color]="rate <=productDetails.rating" *ngFor="let rate of [1,2,3,4,5]"
+                        class="fas fa-star"></i>
+                </span>
+            </div>
+            <span class="total-reviews">{{ratingCount}}</span>
+        </div>
+    </div>
+
+
+    <div class="row">
+        <div class="col-md-4" [lang]="isArabic()? 'ar':'en'">
+            <h2>{{'productDetails.Add a new review' | translate}}</h2>
+
+            <form (ngSubmit)="handleReview()" [formGroup]="reviewForm">
+                <div class="my-2">
+                    <p-rating [cancel]="false" formControlName="rating"></p-rating>
+                </div>
+                <textarea placeholder="{{'productDetails.Message' | translate}}" rows="6" maxlength="200" class="w-100 form-control mt-2"
+                    formControlName="review"
+                    [ngClass]="{ 'is-invalid': reviewForm.get('review')?.invalid && reviewForm.get('review')?.touched,
+                                                        'is-valid': reviewForm.get('review')?.valid && reviewForm.get('review')?.touched }"></textarea>
+                <button class="btn main-btn my-3">{{'productDetails.Submit Review' | translate}}</button>
+            </form>
+
+        </div>
+        <div class="col-md-8">
+            <div class="review-comments shadow">
+                <div class="my-3" *ngFor="let item of allReviews">
+                    <div class="d-flex align-items-center gap-3">
+                        <img [src]="(item.profile.image.length > 0 ? item.profile.image : './assets/placeholder/placeholder2.png')"
+                            defaultImage="./assets/placeholder/placeholder2.png" [useSrcset]="true" [lazyLoad]="item.profile.image" [alt]="item.profile.full_name"
+                            class="review-image" (error)="item.profile.image = './assets/placeholder/placeholder2.png'" />
+                        <p>{{item.profile.full_name}}</p>
+                    </div>
+                    <span class="text-muted d-block">{{item.date|date:'EEEE, MMMM d, y, h:mm:ss a'}}</span>
+                    <i [class.rating-color]="rate <=item.rating" *ngFor="let rate of [1,2,3,4,5]"
+                        class="fa-solid fa-star"></i>
+                    <p>
+                        {{item.review}}
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<ng-template #notloaded>
+    <div class="d-flex justify-content-center align-items-center vh-100">
+        <app-loading></app-loading>
+    </div>
+</ng-template>
+<!-- alert user should sign in -->
+<div #layer class="layerLogin d-none">
+    <div
+        class="alertLogin p-4 bg-white rounded-3 d-flex flex-column align-items-center justify-content-between position-relative">
+        <i class="fa-regular fa-circle-xmark position-absolute end-0 top-0 fa-2x me-2 mt-2" role="button"
+            (click)="closeLayer(layer)"></i>
+        <div class="text-center mt-4">
+            <p class="h2">Welcome</p>
+            <p class="h4 mt-3">Login to your account</p>
+        </div>
+        <button class="btn btn-success  w-75 my-4" routerLink="/login">Login</button>
+        <p>Don't have an account , <span role="button" class="text-decoration-underline"
+                routerLink="/register">Signup</span></p>
+    </div>
+</div>
+<!--  -->

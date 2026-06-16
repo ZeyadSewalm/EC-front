@@ -1,0 +1,29 @@
+$Dark_blue : #15263E;
+
+.btn-up {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 99;
+  background-color: var(--main-color);
+  color: #fff;
+  border: unset;
+  font-size: 20px;
+}
+
+// .layout {
+//   margin-top: 192px;
+// }
+
+:host {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 100vh;
+}

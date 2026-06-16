@@ -1,0 +1,87 @@
+<section class="home-auth" [dir]="isArabic() ? 'rtl' : 'ltr'">
+  <div class="main shadow-lg bg-white">
+    <div class="signup">
+      <form [formGroup]="loginForm" (ngSubmit)="handleLogin()">
+        <p class="title">{{ "account.Login" | translate }}</p>
+        <div class="d-flex flex-column gap-3">
+          <div>
+            <input
+              type="email"
+              [placeholder]="'account.Email' | translate"
+              formControlName="email"
+              autocomplete="email"
+            />
+            <div
+              class="validation"
+              *ngIf="
+                loginForm.get('email')?.errors &&
+                loginForm.get('email')?.touched
+              "
+            >
+              <p
+                class="text-danger m-0"
+                *ngIf="loginForm.get('email')?.getError('required')"
+              >
+                {{ "account.email-req" | translate }}
+              </p>
+              <p
+                class="text-danger m-0"
+                *ngIf="loginForm.get('email')?.getError('email')"
+              >
+                {{ "account.email-valid" | translate }}
+              </p>
+            </div>
+          </div>
+          <div>
+            <!-- <input type="password" [placeholder]="'account.password' | translate" formControlName="password"
+                            autocomplete="new-password"> -->
+            <div class="flex justify-content-center">
+              <p-password
+                [placeholder]="'account.password' | translate"
+                formControlName="password"
+                [toggleMask]="true"
+                [dir]="isArabic() ? 'rtl' : 'ltr'"
+              />
+            </div>
+            <div
+              class="validation"
+              *ngIf="
+                loginForm.get('password')?.errors &&
+                loginForm.get('password')?.touched
+              "
+            >
+              <p
+                class="text-danger m-0"
+                *ngIf="loginForm.get('password')?.getError('required')"
+              >
+                {{ "account.pass-req" | translate }}
+              </p>
+            </div>
+          </div>
+        </div>
+        <a
+          routerLink="/forgetPassword"
+          class="border-0 text-main cursor-pointer"
+          >{{ "account.Forget_pass" | translate }}</a
+        >
+
+        <div class="d-flex justify-content-center mt-3">
+          <button type="submit" class="btn-main">
+            <span *ngIf="isloading" class="loader ms-2"></span
+            >{{ "account.Login" | translate }}
+          </button>
+        </div>
+
+        <div class="d-flex mt-3">
+          <span class="text-black">
+            {{ "account.don't have an account" | translate }}
+          </span>
+          &nbsp;
+          <a routerLink="/register" class="text-main cursor-pointer">
+            Register
+          </a>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>

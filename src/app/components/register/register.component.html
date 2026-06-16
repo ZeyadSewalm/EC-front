@@ -1,0 +1,181 @@
+<section class="home-auth" [dir]="isArabic() ? 'rtl' : 'ltr'">
+  <div class="main shadow bg-white">
+    <div class="signup">
+      <form [formGroup]="registerForm" (ngSubmit)="handleForm()">
+        <p class="title">{{ "account.signup" | translate }}</p>
+        <div class="d-flex gap-3 flex-column">
+          <div>
+            <input
+              [placeholder]="'account.userName' | translate"
+              formControlName="full_name"
+            />
+            <div
+              class="validation"
+              *ngIf="
+                registerForm.get('full_name')?.errors &&
+                registerForm.get('full_name')?.touched
+              "
+            >
+              <p
+                class="text-danger m-0"
+                *ngIf="registerForm.get('full_name')?.getError('required')"
+              >
+                {{ "account.userName.required" | translate }}
+              </p>
+              <p
+                class="text-danger m-0"
+                *ngIf="registerForm.get('full_name')?.getError('minlength')"
+              >
+                {{ "account.userName.minlength" | translate }}
+              </p>
+              <p
+                class="text-danger m-0"
+                *ngIf="registerForm.get('full_name')?.getError('maxlength')"
+              >
+                {{ "account.userName.maxlength" | translate }}
+              </p>
+            </div>
+          </div>
+          <div>
+            <input
+              type="email"
+              [placeholder]="'account.Email' | translate"
+              formControlName="email"
+              autocomplete="email"
+            />
+            <div
+              class="validation"
+              *ngIf="
+                registerForm.get('email')?.errors &&
+                registerForm.get('email')?.touched
+              "
+            >
+              <p
+                class="text-danger m-0"
+                *ngIf="registerForm.get('email')?.getError('required')"
+              >
+                {{ "account.email-req" | translate }}
+              </p>
+              <p
+                class="text-danger m-0"
+                *ngIf="registerForm.get('email')?.getError('email')"
+              >
+                {{ "account.email-valid" | translate }}
+              </p>
+            </div>
+          </div>
+          <div>
+            <!-- <input type="password" [placeholder]="'account.password'|translate" formControlName="password" autocomplete="new-password"> -->
+            <div class="flex justify-content-center">
+              <p-password
+                [placeholder]="'account.password' | translate"
+                formControlName="password"
+                [toggleMask]="true"
+                [dir]="isArabic() ? 'rtl' : 'ltr'"
+              />
+            </div>
+            <div
+              class="validation"
+              *ngIf="
+                registerForm.get('password')?.errors &&
+                registerForm.get('password')?.touched
+              "
+            >
+              <p
+                class="text-danger m-0"
+                *ngIf="registerForm.get('password')?.getError('required')"
+              >
+                {{ "account.pass-req" | translate }}
+              </p>
+              <p
+                class="text-danger m-0"
+                *ngIf="registerForm.get('password')?.getError('pattern')"
+              >
+                {{ "account.password.pattern" | translate }}
+              </p>
+            </div>
+          </div>
+          <div>
+            <!-- <input type="password" [placeholder]="'account.confirmPassword.placeholder'|translate" formControlName="password2" autocomplete="new-password"> -->
+            <div class="flex justify-content-center">
+              <p-password
+                [placeholder]="
+                  'account.confirmPassword.placeholder' | translate
+                "
+                formControlName="password2"
+                [toggleMask]="true"
+                [dir]="isArabic() ? 'rtl' : 'ltr'"
+              />
+            </div>
+            <div
+              class="validation"
+              *ngIf="
+                registerForm.get('password2')?.errors &&
+                registerForm.get('password2')?.touched
+              "
+            >
+              <p
+                class="text-danger m-0"
+                *ngIf="registerForm.get('password2')?.getError('required')"
+              >
+                {{ "account.confirmPassword.required" | translate }}
+              </p>
+              <p
+                class="text-danger m-0"
+                *ngIf="
+                  registerForm.get('password2')?.getError('compare') &&
+                  !registerForm.get('password2')?.getError('required')
+                "
+              >
+                {{ "account.confirmPassword.compare" | translate }}
+              </p>
+            </div>
+          </div>
+          <div>
+            <input
+              type="tel"
+              [placeholder]="'account.phone.placeholder' | translate"
+              formControlName="phone"
+              [dir]="isArabic() ? 'rtl' : 'ltr'"
+            />
+            <div
+              class="validation"
+              *ngIf="
+                registerForm.get('phone')?.errors &&
+                registerForm.get('phone')?.touched
+              "
+            >
+              <p
+                class="text-danger m-0"
+                *ngIf="registerForm.get('phone')?.getError('required')"
+              >
+                {{ "account.phone.required" | translate }}
+              </p>
+              <p
+                class="text-danger m-0"
+                *ngIf="registerForm.get('phone')?.getError('pattern')"
+              >
+                {{ "account.phone.pattern" | translate }}
+              </p>
+            </div>
+          </div>
+
+          <button type="submit" class="btn-main mx-auto d-block">
+            <span *ngIf="isloading" class="loader ms-2"></span>
+            {{ "account.signup" | translate }}
+          </button>
+        </div>
+
+        <div class="d-flex mt-3">
+          <span class="text-black">
+            {{ "account.do you have an account" | translate }}
+          </span>
+          &nbsp;
+          <a routerLink="/login" class="text-main cursor-pointer">
+            Login
+          </a>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>

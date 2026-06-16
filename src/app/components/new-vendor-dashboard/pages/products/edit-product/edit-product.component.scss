@@ -1,0 +1,114 @@
+
+
+
+.product-form-container {
+  max-width: 1000px;
+  margin: auto;
+  padding: 20px;
+
+  .form-section {
+    margin-top: 25px;
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background: #fafafa;
+  }
+
+  h4 {
+    font-weight: 600;
+    margin-bottom: 15px;
+  }
+
+  .btn {
+    min-width: 120px;
+  }
+}
+
+.form-select {
+  border-radius: 0.5rem;
+  padding: 0.5rem 1rem;
+  border: 1px solid #ccc;
+  transition: border-color 0.2s, box-shadow 0.2s;
+
+  &:focus {
+    border-color: #228200;
+    box-shadow: 0 0 0 0.2rem rgba(34, 130, 0, 0.25);
+  }
+}
+.form-header {
+  border-bottom: 2px solid #dc3545;
+  padding-bottom: 1rem;
+}
+
+.form-title {
+  font-weight: 600;
+  color: #dc3545; /* your brand green */
+  margin: 0;
+}
+
+.text-muted {
+  font-size: 0.9rem;
+}
+
+.thumbnail-preview {
+  display: flex;
+  justify-content: start;
+  gap: 200px;
+  align-items: center;
+}
+
+.thumbnail-preview img {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  display: inline-block;
+}
+
+.gallery-preview {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.gallery-preview img {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+}
+
+
+
+
+.thumb-section {
+  padding: 16px;
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  background: #fafafa;
+}
+
+.thumb-preview-box {
+  flex-shrink: 0;
+  width: 150px;
+  height: 150px;
+  border: 1px solid #e0e0e0;
+  border-radius: 12px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f8f9fa;
+}
+
+.thumb-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.thumb-input-area {
+  flex-grow: 1;
+}

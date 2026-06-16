@@ -1,0 +1,262 @@
+$Dark_blue : #15263E;
+
+.nav--content {
+  background-color: #fff;
+  a {
+    color: #333;
+  }
+  span {
+    color: #333;
+    padding: 0;
+  }
+}
+
+.nav-categories {
+  li {
+    font-weight: 500;
+    color: #333;
+    font-size: 1rem;
+    padding: 10px 20px !important;
+    cursor: pointer;
+    transition: all 0.5s;
+    &:hover {
+      background-color: #eee;
+    }
+  }
+}
+.cartNumber {
+  top: 0px ;
+  right: -5px ;
+  font-size: 12px;
+}
+
+.f-header {
+  padding-top: 10px;
+  i {
+    color: $Dark_blue;
+    // margin-right: 5px;
+    font-size: 12px;
+  }
+  span {
+    font-size: 12px;
+  }
+  .currency {
+    font-size: 12px;
+    margin-right: 5px;
+  }
+  .arrow-icon {
+    margin-top: 2px;
+    font-size: 12px;
+    color: #777;
+  }
+
+  .flag {
+    &:hover .show {
+      height: fit-content !important;
+      padding: 15px 4px !important;
+    }
+    .dropdown-flag {
+      background-color: #fff;
+      position: absolute;
+      width: 100%;
+      z-index: 99;
+      height: 0;
+      overflow: hidden;
+      border-radius: 5px;
+      padding: 0;
+      transition: height 0.3s ease;
+    }
+
+    .single-flag {
+      cursor: pointer;
+      &:hover {
+        background-color: #e5dddd;
+      }
+    }
+  }
+
+  .dropdown-currency {
+    .show {
+      height: fit-content !important;
+      padding: 15px 10px !important;
+    }
+    .dropdown-label-currency {
+      background-color: #fff;
+      position: absolute;
+      width: 100%;
+      z-index: 99;
+      height: 0;
+      overflow: hidden;
+      border-radius: 5px;
+      padding: 0;
+      transition: height 0.3s ease;
+    }
+
+    .single-currency {
+      cursor: pointer;
+      &:hover {
+        background-color: #e5dddd;
+      }
+    }
+  }
+
+  .title-header {
+    font-size: 14px;
+    cursor: pointer;
+  }
+  .social-icons i {
+    color: #333;
+    font-size: 14px;
+    transition: all 0.3s;
+    cursor: pointer;
+    &:hover {
+      color: var(--main-color);
+    }
+  }
+}
+
+.account {
+  font-size: 14px;
+  line-height: 1;
+}
+
+.bg-num {
+  background-color: var(--main-color);
+  border-radius: 50%;
+  min-width: 20px;
+  min-height: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.search-input {
+  position: relative;
+  input {
+    border: 2px solid var(--main-color) !important;
+    border-radius: 0;
+    overflow: hidden;
+  }
+  .icon-search {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: var(--main-color);
+    color: #fff;
+  }
+  .btn-check:checked + .btn,
+  .btn.active,
+  .btn.show,
+  .btn:first-child:active,
+  :not(.btn-check) + .btn:active {
+    border-color: var(--main-color) !important;
+  }
+}
+
+.category {
+  background-color: var(--main-color);
+  padding: 5px 15px;
+  border-radius: 5px;
+  color: #fff;
+
+}
+
+
+.dropdown-category ul {
+    white-space: nowrap !important;
+}
+.dropdown-category {
+  position: absolute;
+  top: 36px;
+  right: 0;
+  left: 0;
+  z-index: 300;
+  min-width: fit-content !important;
+  background-color: #fff;
+  color: #333;
+  border-bottom-right-radius: 5px;
+  border-bottom-left-radius: 5px;
+  padding: 0;
+  height: 0;
+  overflow: hidden;
+  .single-category {
+    padding: 10px;
+    transition: all .5s;
+    &:hover{
+      background-color: #e6cece;
+    }
+  }
+
+}
+
+.cat-drop{
+  &:hover .dropdown-category{
+    height: fit-content;
+    padding: 10px;
+  }
+}
+.navBarSm {
+  display: none;
+}
+
+@media screen and (max-width:890px) {
+  .navBarLg{
+    display: none;
+  };
+  .navBarSm {
+    display: block;
+  }
+}
+
+.navBarSm {
+  ul {
+    .hoverAction .nav-item:not(:first-child) {
+      padding: 5px 10px;
+      transition: all .2s;
+      border-radius: 5px;
+      &:hover{
+        background-color: #e6cece;
+        cursor: pointer;
+      }
+    }
+  }
+}
+
+.dropdown-category ul {
+    white-space: nowrap !important;
+}
+.search-product{
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background-color: #e5dddd;
+  overflow: auto;
+  max-height: 300px;
+  padding: 20px 10px;
+  z-index: 300;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+}
+
+.product-title{
+cursor: pointer;
+padding: 10px;
+transition: all .3s;
+&:hover{
+  background-color: #333;
+  color: #fff;
+}
+}
+
+.loading{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 200px;
+}
+
+.dropdown:hover .dropdown-menu {
+    display: block;
+    position: absolute;
+}

@@ -1,0 +1,82 @@
+<div class="receipt-container" #receiptContent>
+  <div class="header-bar"></div>
+
+  <div class="receipt-header">
+      <div class="logo-section">
+      <h2>RECEIPT</h2>
+      <div class="company-info">
+          <p><strong>{{ order?.orderitem[0]?.vendor?.name_en }}</strong></p>
+          <p>{{ order?.orderitem[0]?.vendor?.email }}</p>
+          <p>{{ order?.orderitem[0]?.vendor?.phone }}</p>
+          <p>{{ order?.orderitem[0]?.vendor?.address }}</p>
+    </div>
+    </div>
+
+    <div class="logo-section">
+      <img class="logo-img" src="./assets/logo.svg" alt="logo">
+      <div class="payment-info">
+        <p><strong>PAYMENT DATE:</strong> {{ order?.orderitem[0]?.date | date }}</p>
+        <p><strong>RECEIPT NO.:</strong> {{ order?.orderitem[0]?.oid }}</p>
+      </div>
+    </div>
+  </div>
+
+
+
+
+  <div class="bill-ship-section">
+    <div>
+      <strong>BILL TO</strong>
+      <p>{{ order?.orderitem[0]?.order?.full_name }}</p>
+      <p>{{ order?.orderitem[0]?.order?.email }}</p>
+      <p>{{ order?.orderitem[0]?.order?.mobile }}</p>
+      <p>{{ order?.orderitem[0]?.order?.address }}</p>
+    </div>
+    <div>
+      <strong>SHIP TO</strong>
+      <p>{{ order?.orderitem[0]?.order?.full_name }}</p>
+      <p>{{ order?.orderitem[0]?.order?.address }}</p>
+      <p>{{ order?.orderitem[0]?.order?.city }}</p>
+      <p>{{ order?.orderitem[0]?.order?.country }}</p>
+    </div>
+  </div>
+
+  <table class="items-table">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>SKU</th>
+        <th>QTY</th>
+        <th>Discount</th>
+        <th>UNIT PRICE</th>
+        <th>TOTAL</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of order?.orderitem">
+        <td>{{ item.product.title_en }}</td>
+        <td>{{ item.product.sku }}</td>
+        <td>{{ item.qty }}</td>
+        <td>{{ item.saved }}</td>
+        <td>{{ item.price }} {{ item.currency }}</td>
+        <td>{{ item.total }} {{ item.currency }}</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="totals-section">
+    <div class="left">
+      <p>Notes or remarks can go here...</p>
+    </div>
+    <div class="right">
+      <p>Subtotal: {{ subtotal }} EGP</p>
+      <p>Tax: {{ taxFee }} EGP</p>
+      <p>Shipping: {{ shipping }} EGP</p>
+      <p>Service Fee: {{ serviceFee }} EGP</p>
+      <p><strong>Total: {{ total }} EGP</strong></p>
+    </div>
+  </div>
+
+  <div class="footer-bar"></div>
+
+</div>

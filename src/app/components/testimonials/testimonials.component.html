@@ -1,0 +1,22 @@
+<section class="testimonial-section">
+  <div class="container">
+    <h2 class="text-center mb-3">Customer Testimonial</h2>
+    <swiper-container class="mySwiper" navigation="true"
+    autoplay-delay="3000"
+ >
+    <swiper-slide *ngFor="let testimonial of testimonials">
+      <div class="d-flex flex-column align-items-center justify-content-center">
+        <p class="testimonial-text">{{ testimonial.text }}</p>
+        <div class="d-flex align-items-center justify-content-center gap-2 mt-3">
+          <!-- <div class="testimonial-img">
+          </div> -->
+          <div>
+            <p class="testimonial-name">{{ testimonial.name }}</p>
+            <span class="testimonial-job">{{ testimonial.job }}</span>
+          </div>
+        </div>
+      </div>
+    </swiper-slide>
+  </swiper-container>
+  </div>
+</section>

@@ -1,0 +1,44 @@
+.totalCard {
+    background-color: rgb(160, 226, 160);
+    width: 220px;
+    height: 110px;
+}
+.payStatusCard {
+    background-color: rgb(152, 140, 220);
+    width: 220px;
+    height: 110px;
+}
+.orderStatusCard {
+    background-color: rgb(231, 164, 233);
+    width: 220px;
+    height: 110px;
+}
+.shippingAmountCard {
+    background-color: rgb(110, 214, 174);
+    width: 220px;
+    height: 110px;
+}
+
+.taxFee {
+    background-color: rgb(110, 200, 214);
+    width: 300px;
+    height: 110px;
+}
+.serviceFee {
+    background-color: rgb(209, 153, 214);
+    width: 300px;
+    height: 110px;
+}
+.discountFee {
+    background-color: rgb(243, 239, 141);
+    width: 300px;
+    height: 110px;
+}
+table {
+    th {
+        border-bottom: 2px solid gray;
+    }
+    th , td {
+        padding: 10px;
+    }
+}

@@ -1,0 +1,24 @@
+.paySuccess {
+    border: 2px solid rgb(26, 118, 26);
+}
+.payFail {
+    border: 2px solid rgb(199, 30, 30);
+}
+.checkBack {
+    background-color: rgb(40, 127, 40);
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.failBack {
+    background-color:rgb(199, 30, 30);
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

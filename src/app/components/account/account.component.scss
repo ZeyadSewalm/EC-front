@@ -1,0 +1,38 @@
+$Dark_blue : #15263E;
+
+
+
+.userImg {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    overflow: hidden;
+}
+.userDash {
+    ul {
+        border: 1px solid rgb(204, 204, 204);
+
+    }
+    li {
+        border-bottom: 1px solid rgb(204, 204, 204);
+        padding: 10px;
+        cursor: pointer;
+        transition: 0.2s;
+        &:hover {
+            color: $Dark_blue;
+        }
+        i {
+            margin-right: 5px;
+        }
+    }
+    li:last-child {
+        border-bottom: none;
+        &:hover {
+            padding-left: 20px;
+            color: $Dark_blue;
+        }
+    }
+}
+.notificationsCount {
+    background-color:var(--main);
+}

@@ -1,0 +1,7 @@
+.read {
+    background-color: rgb(17, 125, 161);
+    transition: 0.2s;
+    &:hover {
+        background-color: rgb(15, 95, 122);
+    }
+}

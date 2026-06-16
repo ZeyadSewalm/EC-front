@@ -1,0 +1,171 @@
+<section *ngIf="!loadingBest&&!loadingCategory&&!loadingPopular&&!loadingbrand && !loadingNew else notload">
+    <app-main-slider></app-main-slider>
+    <div class="container">
+        <div class="category mt-4" *ngIf="category.length > 0">
+                <div class="d-flex justify-content-center gap-5 flex-wrap">
+                    <ng-container *ngFor="let item of category">
+                        <div class="single-category" [routerLink]="['/products']"
+                            [queryParams]="{ category: item.title,id:item.id}">
+                            <img [src]="(item.image.length > 0 ? item.image : './assets/placeholder/placeholder2.png')"
+                                defaultImage="./assets/placeholder/placeholder2.png" [useSrcset]="true"
+                                [lazyLoad]="item.image" [alt]="item.title" class="w-100 default-image"
+                                (error)="item.image = './assets/placeholder/placeholder2.png'" />
+                            <div class="overlay">
+                                  <span>{{ item.title }}</span>
+                            </div>
+                        </div>
+                    </ng-container>
+                </div>
+        </div>
+
+        <div class="my-5 product" *ngIf="newProduct.length > 0">
+            <h2 class="pb-5 text-center" [lang]="isArabic()? 'ar':'en'">{{'home.new collections'|translate}}</h2>
+            <owl-carousel-o [options]="newProductSlider">
+                <ng-template carouselSlide *ngFor="let item of newProduct">
+                    <div class="single-product position-relative">
+                        <div class="product">
+                            <div *ngIf="!wishlistData.includes($any(item.id))"
+                                class="heart shadow d-flex align-items-center justify-content-center"
+                                (click)="addAndRemoveWhishlist(item.id , layer)">
+                                <i class="fa-regular fa-heart fs-5 cursor-pointer"></i>
+                            </div>
+                            <div *ngIf="wishlistData.includes($any(item.id))"
+                                class="heart shadow d-flex align-items-center justify-content-center fav"
+                                (click)="addAndRemoveWhishlist(item.id , layer)">
+                                <i class="fa-solid fa-heart fs-5 cursor-pointer"></i>
+                            </div>
+                            <button class="btn main-btn py-2"[lang]="isArabic()? 'ar':'en'"
+                                [routerLink]="['/product/details', item.slug]">{{'home.Show Product'|translate}}</button>
+                            <img [src]="(item.image.length > 0 ? item.image : './assets/placeholder/placeholder2.png')"
+                                defaultImage="./assets/placeholder/placeholder2.png" [useSrcset]="true"
+                                [lazyLoad]="item.image" alt="Product Image" height="300" class="w-100 default-image"
+                                (error)="item.image = './assets/placeholder/placeholder2.png'" />
+                            <div class="badge">
+                                <span [lang]="isArabic()? 'ar':'en'">{{'home.new'|translate}}</span>
+                            </div>
+                        </div>
+                        <div class="cursor-pointer" [routerLink]="['/product/details',item.slug]">
+                            <span [lang]="isArabic()? 'ar':'en'">{{item.category|uppercase}}</span>
+                            <h6 [lang]="isArabic()? 'ar':'en'" class="title-cell">{{item.title}}</h6>
+                            <div class="d-flex flex-wrap gap-2 justify-content-between align-items-center">
+                                <p [lang]="isArabic()? 'ar':'en'">{{item.price + ' '}}{{'currency.EGP'|translate}}</p>
+                                <div>
+                                    <i [class.rating-color]="rate <=item.rating" *ngFor="let rate of [1,2,3,4,5]"
+                                        class="fa-solid fa-star"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </ng-template>
+            </owl-carousel-o>
+        </div>
+
+        <div class="my-5 product" *ngIf="popularProduct.length > 0" >
+            <h2 class="pb-5 text-center" [lang]="isArabic()? 'ar':'en'">{{'home.popular product'|translate}}</h2>
+            <owl-carousel-o [options]="productSlider">
+                <ng-template carouselSlide *ngFor="let item of popularProduct">
+                    <div class="single-product position-relative">
+                        <div class="product">
+                            <div *ngIf="!wishlistData.includes($any(item.id))"
+                                class="heart shadow d-flex align-items-center justify-content-center"
+                                (click)="addAndRemoveWhishlist(item.id , layer)">
+                                <i class="fa-regular fa-heart fs-5 cursor-pointer"></i>
+                            </div>
+                            <div *ngIf="wishlistData.includes($any(item.id))"
+                                class="heart shadow d-flex align-items-center justify-content-center fav"
+                                (click)="addAndRemoveWhishlist(item.id , layer)">
+                                <i class="fa-solid fa-heart fs-5 cursor-pointer"></i>
+                            </div>
+                            <button class="btn main-btn py-2"[lang]="isArabic()? 'ar':'en'"
+                                [routerLink]="['/product/details', item.slug]">{{'home.Show Product'|translate}}</button>
+                            <img [src]="(item.image.length > 0 ? item.image : './assets/placeholder/placeholder2.png')"
+                                defaultImage="./assets/placeholder/placeholder2.png" [useSrcset]="true"
+                                [lazyLoad]="item.image" alt="Product Image" height="300" class="w-100 default-image"
+                                (error)="item.image = './assets/placeholder/placeholder2.png'" />
+                            <div class="badge">
+                                <span [lang]="isArabic()? 'ar':'en'">{{'home.new'|translate}}</span>
+                            </div>
+                        </div>
+                        <div class="cursor-pointer" [routerLink]="['/product/details',item.slug]">
+                            <span [lang]="isArabic()? 'ar':'en'">{{item.category|uppercase}}</span>
+                            <h6 [lang]="isArabic()? 'ar':'en'" class="title-cell">{{item.title}}</h6>
+                            <div class="d-flex flex-wrap gap-2 justify-content-between align-items-center">
+                                <p [lang]="isArabic()? 'ar':'en'">{{item.price + ' '}}{{'currency.'+item.currency|translate}}</p>
+                                <div>
+                                    <i [class.rating-color]="rate <=item.rating" *ngFor="let rate of [1,2,3,4,5]"
+                                        class="fa-solid fa-star"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </ng-template>
+            </owl-carousel-o>
+        </div>
+        <div class="my-5 product" *ngIf="products.length > 0">
+            <h2 class="pb-5 text-center" [lang]="isArabic()? 'ar':'en'">{{'home.best Seller'|translate}}</h2>
+            <owl-carousel-o [options]="productSlider">
+                <ng-template carouselSlide *ngFor="let item of products">
+                    <div class="single-product position-relative">
+                        <div class="product">
+                            <div *ngIf="!wishlistData.includes($any(item.id))"
+                                class="heart shadow d-flex align-items-center justify-content-center"
+                                (click)="addAndRemoveWhishlist(item.id , layer)">
+                                <i class="fa-regular fa-heart fs-5 cursor-pointer"></i>
+                            </div>
+                            <div *ngIf="wishlistData.includes($any(item.id))"
+                                class="heart shadow d-flex align-items-center justify-content-center fav"
+                                (click)="addAndRemoveWhishlist(item.id , layer)">
+                                <i class="fa-solid fa-heart fs-5 cursor-pointer"></i>
+                            </div>
+                            <button class="btn main-btn py-2"
+                                [routerLink]="['/product/details', item.slug]">{{'home.Show Product'|translate}}</button>
+                            <img [src]="(item.image.length > 0 ? item.image : './assets/placeholder/placeholder2.png')"
+                                defaultImage="./assets/placeholder/placeholder2.png" [useSrcset]="true"
+                                [lazyLoad]="item.image" alt="Product Image" height="300" class="w-100 default-image"
+                                (error)="item.image = './assets/placeholder/placeholder2.png'" />
+
+                            <div class="badge">
+                                <span [lang]="isArabic()? 'ar':'en'">{{'home.new'|translate}}</span>
+                            </div>
+                        </div>
+                        <div class="cursor-pointer" [routerLink]="['/product/details',item.slug]">
+                            <span [lang]="isArabic()? 'ar':'en'">{{item.category|uppercase}}</span>
+                            <h6 [lang]="isArabic()? 'ar':'en'" class="title-cell">{{item.title}}</h6>
+                            <div class="d-flex flex-wrap gap-2 justify-content-between align-items-center">
+                                <p [lang]="isArabic()? 'ar':'en'">{{item.price + ' '}}{{'currency.'+item.currency|translate}}</p>
+                                <div>
+                                    <i [class.rating-color]="rate <=item.rating" *ngFor="let rate of [1,2,3,4,5]"
+                                        class="fa-solid fa-star"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </ng-template>
+            </owl-carousel-o>
+        </div>
+      </div>
+      <app-testimonials></app-testimonials>
+      <app-benefits></app-benefits>
+
+    <!-- alert user should sign in -->
+    <div #layer class="layerLogin d-none">
+        <div
+            class="alertLogin p-4 bg-white rounded-3 d-flex flex-column align-items-center justify-content-between position-relative">
+            <i class="fa-regular fa-circle-xmark position-absolute end-0 top-0 fa-2x me-2 mt-2" role="button"
+                (click)="closeLayer(layer)"></i>
+            <div class="text-center mt-4">
+                <p class="h2">Welcome</p>
+                <p class="h4 mt-3">Login to your account</p>
+            </div>
+            <button class="btn btn-success  w-75 my-4" routerLink="/login">Login</button>
+            <p>Don't have an account , <span role="button" class="text-decoration-underline"
+                    routerLink="/register">Signup</span></p>
+        </div>
+    </div>
+
+</section>
+<ng-template #notload>
+    <div class="d-flex justify-content-center align-items-center vh-100">
+        <app-loading></app-loading>
+    </div>
+</ng-template>

@@ -1,0 +1,109 @@
+.receipt-container {
+  width: 800px;
+  margin: auto;
+  font-family: 'Arial', sans-serif;
+  background-color: white;
+  color: black;
+  padding: 20px;
+  box-shadow: 0 0 10px #ccc;
+}
+
+.header-bar,
+.footer-bar {
+  height: 10px;
+  background-color: #a00000;
+  margin-bottom: 20px;
+}
+
+.receipt-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+
+}
+
+.logo-section {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  flex-direction: column;
+}
+
+
+.logo {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background-color: #444;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+}
+
+.payment-info p {
+  margin: 2px 0;
+}
+
+.company-info {
+  margin: 10px 0;
+  font-size: 14px;
+}
+
+.bill-ship-section {
+  display: flex;
+  justify-content: space-between;
+  margin: 20px 0;
+  font-size: 14px;
+}
+
+.items-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+  font-size: 14px;
+}
+
+.items-table th {
+  background-color: #a00000;
+  color: white;
+  padding: 8px;
+  text-align: left;
+}
+
+.items-table td {
+  border: 1px solid #ccc;
+  padding: 8px;
+}
+
+.totals-section {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+  font-size: 14px;
+}
+
+.totals-section .right p {
+  margin: 4px 0;
+  text-align: right;
+}
+
+.print-btn {
+  margin-top: 20px;
+  padding: 10px 20px;
+  background-color: #a00000;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+
+
+@media print {
+  * {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    color-adjust: exact !important;
+  }
+}

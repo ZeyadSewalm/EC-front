@@ -1,0 +1,26 @@
+<section class="my-5" *ngIf="render" [dir]="isArabic() ? 'rtl' : 'ltr'">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-3 col-md-4">
+                <div class="shadow d-flex flex-column justify-content-center align-items-center p-2 rounded-3">
+                    <div class="userImg"><img [src]="userImage" alt="" class="w-100 h-100"></div>
+                    <h4 class="my-2 text-capitalize">{{userName.split(' ').splice(0,2).join(' ')}}</h4>
+                    <p routerLink="settings" class="text-prim text-decoration-underline" role="button"><i class="ms-2 fa-solid fa-pen-to-square"></i><span [lang]="isArabic()? 'ar':'en'"> {{'customerDashboard.Edit Account' | translate}}</span></p>
+                </div>
+                <div class="userDash my-3">
+                    <ul>
+                        <li routerLink="Account"><i class="ms-2 fa-solid fa-user"></i> <span [lang]="isArabic()? 'ar':'en'">{{'customerDashboard.Account' | translate}}</span></li>
+                        <li routerLink="orders" class="d-flex flex-wrap align-items-center justify-content-between"><span><i class="ms-2 fa-solid fa-cart-shopping"></i><span  [lang]="isArabic()? 'ar':'en'">{{'customerDashboard.Orders' | translate}} </span></span><div class="notificationsCount py-1 px-2 rounded-1 text-white">{{ordersCount}}</div></li>
+                        <li routerLink="wishlist"class="d-flex flex-wrap align-items-center justify-content-between"><span><i class="ms-2 fa-solid fa-heart"></i><span  [lang]="isArabic()? 'ar':'en'">{{'customerDashboard.Wishlist' | translate}} </span></span><div class="notificationsCount py-1 px-2 rounded-1 text-white">{{itemsWishlistCount}}</div></li>
+                        <li routerLink="notifications" class="d-flex flex-wrap align-items-center justify-content-between"><span><i class="ms-2 fa-solid fa-bell"></i><span  [lang]="isArabic()? 'ar':'en'">{{'customerDashboard.Notification' | translate}} </span></span><div class="notificationsCount py-1 px-2 rounded-1 text-white">{{notificationsCount}}</div></li>
+                        <li routerLink="settings"><i class="ms-2 fa-solid fa-gear"></i> <span  [lang]="isArabic()? 'ar':'en'">{{'customerDashboard.Setting' | translate}}</span></li>
+                        <li><i class="ms-2 fa-solid fa-right-from-bracket"></i> <span  [lang]="isArabic()? 'ar':'en'">{{'customerDashboard.Logout' | translate}}</span></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-lg-9 col-md-8">
+                <router-outlet></router-outlet>
+            </div>
+        </div>
+    </div>
+</section>

@@ -1,0 +1,53 @@
+<section *ngIf="allOrders.length > 0 else noOrders" [dir]="isArabic() ? 'rtl' : 'ltr'" [lang]="isArabic()? 'ar':'en'">
+    <h4><i lang="en" class="fa-solid fa-cart-shopping text-prim fs-2"></i> {{'customerDashboard.All Orders' | translate}}</h4>
+    <div class="ordersData d-flex flex-wrap justify-content-between align-items-center mb-4 mt-3">
+        <div class="orders d-flex flex-wrap justify-content-between align-items-center shadow rounded-2">
+            <div> 
+                <p class="mb-2">{{'customerDashboard.Orders' | translate}}</p>
+                <p>{{allOrders.length}}</p>
+            </div>
+            <i lang="en" class="fa-solid fa-cart-shopping fs-4"></i>
+        </div>
+        <div class="pending d-flex flex-wrap justify-content-between align-items-center shadow rounded-2">
+            <div>
+                <p class="mb-2">{{'customerDashboard.Pending Delivery' | translate}}</p>
+                <p>{{pendingDelivery.length}}</p>
+            </div>
+            <i lang="en" class="fa-solid fa-clock fs-4"></i>
+        </div>
+        <div class="fulfilled d-flex flex-wrap justify-content-between align-items-center shadow rounded-2">
+            <div>
+                <p class="mb-2">{{'customerDashboard.Fulfilled Orders' | translate}}</p>
+                <p>{{fulfilledOrders.length}}</p>
+            </div>
+            <i lang="en" class="fa-solid fa-circle-check fs-4"></i>
+        </div>
+    </div>
+    <div class="overflow-auto shadow mt-5 rounded-3">
+        <table *ngIf="allOrders.length !== 0" class="table align-middle  mb-0">
+            <thead>
+                <th>{{'customerDashboard.Order Id' | translate}}</th>
+                <th>{{'customerDashboard.Payment Status' | translate}}</th>
+                <th>{{'customerDashboard.Order Status' | translate}}</th>
+                <th>{{'cart.Total' | translate}}</th>
+                <th>{{'customerDashboard.Actions' | translate}}</th>
+            </thead>
+            <tbody>
+                <tr *ngFor="let order of allOrders">
+                    <td class="fw-bold">#{{order.oid}}</td>
+                    <td>{{order.payment_status}}</td>
+                    <td>{{order.order_status}}</td>
+                    <td>{{order.total | currency : ' EGP '}}</td>
+                    <td class="view" role="button" [routerLink]="['/account/orderDetails' , order.oid]">{{'customerDashboard.View' | translate}} <i lang="en" class="fa-solid fa-eye"></i></td>
+                </tr>
+            </tbody>
+        </table>
+        <p class="h1 text-prim text-center my-4" *ngIf="allOrders.length == 0"> {{'customerDashboard.No Orders Yet' | translate}} <img
+                src="./assets/shopping.png" alt="" height="100"></p>
+    </div>
+</section>
+<ng-template #noOrders>
+    <div class="d-flex justify-content-center align-items-center">
+        <img src="./assets/shopping/no-product-found.jpg" alt="">
+    </div>
+</ng-template>

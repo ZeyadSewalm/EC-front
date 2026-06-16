@@ -1,0 +1,19 @@
+aside {
+      width: 250px;
+      height:100vh;
+      position: fixed;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      transition: transform 0.3s ease-in-out;
+      transform: translateX(-250px);
+    }
+    aside.show {
+      transform: translateX(0);
+    }
+    @media (min-width: 768px) {
+      aside {
+        position: relative;
+        transform: none;
+      }
+    }

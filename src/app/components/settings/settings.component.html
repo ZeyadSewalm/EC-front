@@ -1,0 +1,45 @@
+<section [dir]="isArabic() ? 'rtl' : 'ltr'" [lang]="isArabic()? 'ar':'en'">
+    <h4><i lang="en" class="fa-solid fa-gear text-prim fs-2 ms-2"></i> <span>{{'cart.Settings' | translate}}</span></h4>
+    <form [formGroup]="userProfileForm">
+        <div>
+            <label for="ProfileImage">{{'cart.Profile Image' | translate}}</label>
+            <input [readonly]="disableInputs"  [ngClass]="{'bg-secondary-subtle': disableInputs}" type="file" (change)="onFileChange($event)" accept="image/png, image/gif, image/jpeg" name="ProfileImage" id="ProfileImage" class="form-control my-2" placeholder="Select an image" formControlName="image">
+        </div>
+        <div>
+            <label for="name">{{'cart.Full Name' | translate}}</label>
+            <input [readonly]="disableInputs" [ngClass]="{'bg-secondary-subtle' : disableInputs}" class="form-control my-2 w-100" type="text" id="name" formControlName="full_name">
+        </div>
+        <div class="d-flex justify-content-between gap-3">
+            <div class="w-50">
+                <label for="email">{{'cart.Email' | translate}} </label>
+                <input [readonly]="disableInputs" [ngClass]="{'bg-secondary-subtle': disableInputs}" class="form-control my-2 w-100" type="email" id="email" formControlName="email">
+            </div>
+            <div class="w-50">
+                <label for="phone">{{'cart.Mobile' | translate}} </label>
+                <input [readonly]="disableInputs" [ngClass]="{'bg-secondary-subtle': disableInputs}" class="form-control my-2 w-100" type="tel" id="phone" formControlName="phone" >
+            </div>
+        </div>
+        <div class="d-flex justify-content-between gap-3">
+            <div class="w-50">
+                <label for="address">{{'cart.Address' | translate}} </label>
+                <input [readonly]="disableInputs" [ngClass]="{'bg-secondary-subtle': disableInputs}" class="form-control my-2 w-100" type="text" id="address" formControlName="Address">
+            </div>
+            <div class="w-50">
+                <label for="City">{{'cart.City' | translate}} </label>
+                <input [readonly]="disableInputs" [ngClass]="{'bg-secondary-subtle': disableInputs}" class="form-control my-2 w-100" type="text" id="City" formControlName="City">
+            </div>
+        </div>
+        <div class="d-flex justify-content-between gap-3">
+            <div class="w-50">
+                <label for="State">{{'cart.State' | translate}} </label>
+                <input [readonly]="disableInputs" [ngClass]="{'bg-secondary-subtle': disableInputs}" class="form-control my-2 w-100" type="text" id="State" formControlName="State">
+            </div>
+            <div class="w-50">
+                <label for="Country">{{'cart.Country' | translate}} </label>
+                <input [readonly]="disableInputs" [ngClass]="{'bg-secondary-subtle': disableInputs}" class="form-control my-2 w-100" type="tel" id="Country" formControlName="Country">
+            </div>
+        </div>
+        <button [ngClass]="{'d-none' : disableInputs == false }" type="button" class="Update btn-main mt-2" (click)="enableInputs()">{{'customerDashboard.Update Data' | translate}}</button>
+        <button [ngClass]="{'d-none' : disableInputs }" type="button" class="Save btn btn-main d-none mt-2" (click)="updateUserProfile()">{{'customerDashboard.Save Changes' | translate}}</button>
+    </form>
+</section>

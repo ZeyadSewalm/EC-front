@@ -1,0 +1,217 @@
+<section
+  class="container-fluid text-capitalize py-3"
+  *ngIf="!loading; else notload"
+>
+  <h1 class="h3">
+    <i class="fa-solid fa-cart-shopping text-info"></i>#{{ Oid }}
+  </h1>
+
+  <!-- First Row -->
+  <div
+    class="row mt-4"
+    [dir]="isArabic() ? 'rtl' : 'ltr'"
+    [lang]="isArabic() ? 'ar' : 'en'"
+  >
+    <div class="col-12 col-sm-6 col-md-4 mb-3">
+      <div class="shadow text-center py-4 h-100 rounded-3 flex-column d-flex">
+        <span>{{ "dashboard.Total Price" | translate }}</span>
+        <span class="h3">{{ data?.vendor_total.total }}</span>
+      </div>
+    </div>
+
+    <div class="col-12 col-sm-6 col-md-4 mb-3">
+      <div class="shadow text-center py-4 h-100 rounded-3 flex-column d-flex">
+        <span>{{ "dashboard.shipping amount" | translate }}</span>
+        <p class="h3">{{ data?.vendor_total.shipping_amount }}</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Second Row -->
+  <div
+    class="row my-4"
+    [dir]="isArabic() ? 'rtl' : 'ltr'"
+    [lang]="isArabic() ? 'ar' : 'en'"
+  >
+    <div class="col-12 col-sm-6 col-md-4 mb-3">
+      <div class="shadow text-center py-4 h-100 rounded-3 flex-column d-flex">
+        <span>{{ "dashboard.tax fee" | translate }}</span>
+        <p class="h3">{{ data?.vendor_total.tax_fee }}</p>
+      </div>
+    </div>
+    <div class="col-12 col-sm-6 col-md-4 mb-3">
+      <div class="shadow text-center py-4 h-100 rounded-3 flex-column d-flex">
+        <span>{{ "dashboard.service fee" | translate }}</span>
+        <p class="h3">{{ data?.vendor_total.service_fee }}</p>
+      </div>
+    </div>
+    <div class="col-12 col-sm-6 col-md-4 mb-3">
+      <div class="shadow text-center py-4 h-100 rounded-3 flex-column d-flex">
+        <span>{{ "dashboard.discount" | translate }}</span>
+        <p class="h3">{{ data?.vendor_total.saved }}</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Order Status -->
+<div class="row my-4">
+  <div class="col-12">
+    <div class="shadow p-4 rounded-3">
+
+      <!-- Vendor Dropdown -->
+      <div>
+        <label for="status">{{ "dashboard.change status" | translate }}</label>
+        <select
+          id="status"
+          class="form-select mt-2"
+          [(ngModel)]="orderStatus"
+          (change)="updateStatus(Oid, orderStatus)"
+        >
+          <option value="Pending">Pending</option>
+          <option value="Approved">Approved</option>
+          <option value="On Delivery">On Delivery</option>
+          <option value="Delivered">Delivered</option>
+        </select>
+      </div>
+
+
+<!-- Customer Progress Timeline -->
+<div  class="order-progress">
+  <div class="step"  [class.active]="['Pending','Approved','On Delivery','Delivered'].includes(orderStatus)">
+    <div class="circle" [class.completed]="['Pending','Approved','On Delivery','Delivered'].includes(orderStatus)">✔</div>
+    <span>Pending</span>
+  </div>
+  <div class="line" [class.active]="['Approved','On Delivery','Delivered'].includes(orderStatus)"></div>
+
+  <div class="step" [class.active]="['Approved','On Delivery','Delivered'].includes(orderStatus)">
+    <div class="circle" [class.completed]="['Approved','On Delivery','Delivered'].includes(orderStatus)">✔</div>
+    <span>Approved</span>
+  </div>
+  <div class="line" [class.active]="['On Delivery','Delivered'].includes(orderStatus)"></div>
+
+  <div class="step" [class.active]="['On Delivery','Delivered'].includes(orderStatus)">
+    <div class="circle" [class.completed]="['On Delivery','Delivered'].includes(orderStatus)">✔</div>
+    <span>On Delivery</span>
+  </div>
+  <div class="line" [class.active]="orderStatus === 'Delivered'"></div>
+
+  <div class="step" [class.active]="orderStatus === 'Delivered'">
+    <div class="circle" [class.completed]="orderStatus === 'Delivered'">✔</div>
+    <span>Delivered</span>
+  </div>
+</div>
+  </div>
+</div>
+  </div>
+
+
+
+
+  <!-- Responsive Table -->
+  <div class="table-responsive">
+    <p-table
+      #dt2
+      [value]="products"
+      styleClass="p-datatable-striped"
+      [paginator]="true"
+      [rows]="10"
+      [rowsPerPageOptions]="[10, 20, 30]"
+      [first]="first"
+      [showCurrentPageReport]="true"
+      dataKey="id"
+      [rowHover]="true"
+      [filterDelay]="0"
+      currentPageReportTemplate="{{
+        'dashboard.SHOWING_ENTRIES'
+          | translate
+            : {
+                first: dt2.first,
+                last: dt2.rows ? dt2.first! + (dt2.rows - 1) : 0,
+                totalRecords: dt2.totalRecords
+              }
+      }}"
+    >
+      <ng-template pTemplate="header">
+        <tr class="text-capitalize">
+          <th>{{ "dashboard.product" | translate }}</th>
+          <th>{{ "dashboard.ProductName" | translate }}</th>
+          <th>{{ "dashboard.Category" | translate }}</th>
+          <th>{{ "dashboard.Quantity" | translate }}</th>
+          <th>{{ "dashboard.size" | translate }}</th>
+          <th>{{ "dashboard.color" | translate }}</th>
+          <th>{{ "dashboard.unit price" | translate }}</th>
+          <th>{{ "dashboard.total" | translate }}</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-order>
+        <tr>
+          <td>
+            <img
+              [src]="
+                order.product.image.length > 0
+                  ? order.product.image
+                  : './assets/placeholder/placeholder2.jpg'
+              "
+              defaultImage="./assets/placeholder/placeholder2.jpg"
+              [useSrcset]="true"
+              [lazyLoad]="order.product.image"
+              [alt]="order.product.title"
+              class="rounded-5"
+              width="70"
+              height="70"
+              (error)="
+                order.product.image = './assets/placeholder/placeholder2.jpg'
+              "
+            />
+          </td>
+          <td>
+            <span class="fs-6 fw-bold">{{ order.product.title_en }}</span>
+          </td>
+          <td>{{ order.product.category }}</td>
+          <td>{{ order.qty }}</td>
+          <td>{{ order.size }}</td>
+          <td>{{ order.color }}</td>
+          <td>{{ order.product.price_EGP }}</td>
+          <td>{{ order.total }}</td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+</section>
+
+<!-- Receipt Button -->
+<div style="display: flex; justify-content: center">
+  <button
+    (click)="toggleReceipt()"
+    style="
+      background-color: #a00000;
+      color: white;
+      padding: 8px 16px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    "
+  >
+    Show Receipt
+  </button>
+</div>
+
+<!-- Receipt Modal -->
+<div class="modal-backdrop" *ngIf="showReceipt">
+  <div class="modal-content">
+    <div id="print-section" #printSection>
+      <app-receipt [order]="orderData"></app-receipt>
+    </div>
+    <div class="modal-actions">
+      <button (click)="print()">Print</button>
+      <button (click)="toggleReceipt()">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<!-- Loading -->
+<ng-template #notload>
+  <div class="d-flex justify-content-center align-items-center vh-100">
+    <app-loading></app-loading>
+  </div>
+</ng-template>
