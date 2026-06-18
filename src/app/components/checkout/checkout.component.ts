@@ -16,6 +16,7 @@ import { OrderData } from 'src/app/shared/interfaces/order-data';
 import { CommonService } from 'src/app/shared/services/common.service';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { ToastrService } from 'ngx-toastr';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-checkout',
@@ -64,6 +65,7 @@ export class CheckoutComponent implements OnInit {
 
   paymentMethod: string = '';
   phone: string = '';
+  private baseUrl = environment.baseURL;
 
   setPaymentMethod(method: any): void {
     this.paymentMethod = method.value;
@@ -83,7 +85,7 @@ export class CheckoutComponent implements OnInit {
         },
       });
     } else {
-      let url = `https://api.omera-eg.com/api/v1/paymob-test/${this.orderId}/${this.paymentMethod}/`;
+      let url = `${this.baseUrl}/v1/paymob-test/${this.orderId}/${this.paymentMethod}/`;
       if (this.paymentMethod === 'wallet') {
         url += `?phone_num=${this.phone}`;
       }

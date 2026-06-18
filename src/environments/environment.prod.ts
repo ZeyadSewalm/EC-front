@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  baseURL: 'https://imaginative-delight.up.railway.app/api',
+  baseURL: 'https://omera2-production.up.railway.app/api',
 };
